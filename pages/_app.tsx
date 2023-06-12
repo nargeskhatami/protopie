@@ -1,9 +1,10 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { FluentProvider, webLightTheme, Theme } from "@fluentui/react-components";
+import { FluentProvider, webDarkTheme, Theme } from "@fluentui/react-components";
+import theme from "@/config/theme.json";
 export const customLightTheme: Theme = {
-  ...webLightTheme,
-  // borderRadiusMedium: "8px", // overriden token
+  ...webDarkTheme,
+  ...theme,
 };
 export default function App({ Component, pageProps }: AppProps) {
   return (
