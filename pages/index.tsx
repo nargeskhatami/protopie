@@ -1,11 +1,5 @@
 import Head from "next/head";
-import AuthDialog from "@/components/Auth/AuthDialog";
-import localFont from "next/font/local"
-
-const YekanBack = localFont({
-  src: './fonts/YekanBakh-VF.ttf', 
-  variable: '--font-yekan-back'
-})
+import Auth from "@/components/Auth/Container";
 
 export default function Home() {
   return (
@@ -16,8 +10,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main  className={YekanBack.className}>
-        <AuthDialog />
+      <main >
+        <Auth />
       </main>
     </>
   );
