@@ -1,5 +1,5 @@
 import Head from "next/head";
-import AuthDialog from "@/components/AuthDialog";
+import AuthDialog from "@/components/Auth/AuthDialog";
 import localFont from "next/font/local"
 
 const YekanBack = localFont({
