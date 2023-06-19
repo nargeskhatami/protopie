@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState } from "react";
+import { useState } from "react";
 
 import ButtonBlock from "../Common/Button/ButtonBlock";
 
@@ -12,8 +12,13 @@ import {
   DialogActions,
   Button,
   makeStyles,
+  InputProps,
 } from "@fluentui/react-components";
 import styled from "styled-components";
+import Login from "./Login";
+import Register from "./Register";
+import ForgotPassword from "./ForgotPassword";
+import axios from "axios";
 
 const useCustomDialogStyles = makeStyles({
   surface: {
@@ -40,8 +45,9 @@ const useCustomDialogStyles = makeStyles({
       marginBottom: "var(--spacingVerticalMNudge)",
     },
   },
-  rightButton: {
+  linkButton: {
     alignSelf: "flex-start",
+    marginBottom: "var(--spacingVerticalXXL) !important",
   },
 });
 
@@ -61,38 +67,103 @@ const SubHeader = styled.span`
 
 const SampleImg = styled.div`
   width: 100%;
-  height: 612px;
+  height: 630px;
   background: white;
   border-radius: 16px;
 `;
 
-// A function that returns the component based on the authComponent state value
-function getAuthComponent(authComponent: string) {
-  switch (authComponent) {
-    case "Login":
-      return lazy(() => import("./Login"));
-    case "Register":
-      return lazy(() => import("./Register"));
-    case "ForgotPassword":
-      return lazy(() => import("./ForgotPassword"));
-    default:
-      return null;
-  }
-}
+type AuthComponent = "Register" | "Login" | "ForgotPassword";
 
 export default function AuthDialog() {
-  const [authComponent, setAuthComponent] = useState("Login");
+  const [title, setTitle] = useState("ورود");
+  const [actionButtonText, setActionButtonText] = useState("ورود");
+  const [authComponent, setAuthComponent] = useState<AuthComponent>("Login");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const onChangeEmail: InputProps["onChange"] = (ev, data) => {
+    setEmail(data.value);
+  };
+  const onChangeUsername: InputProps["onChange"] = (ev, data) => {
+    setUsername(data.value);
+  };
+  const onChangePassword: InputProps["onChange"] = (ev, data) => {
+    setPassword(data.value);
+  };
+  const onChangePassConfirm: InputProps["onChange"] = (ev, data) => {
+    setPasswordConfirm(data.value);
+  };
+
   const customDialogStyles = useCustomDialogStyles();
 
-  // Get the component based on the authComponent state value
-  const AuthComponent = getAuthComponent(authComponent);
+  const changeAuthComponent = (component: AuthComponent | null = null) => {
+    if (!component) component = authComponent === "Login" ? "Register" : "Login";
 
-  const changeAuthComponent = (
-    component: "Register" | "Login" | "ForgotPassword" | "" = ""
-  ) => {
-    if (component) setAuthComponent(component);
-    else if (authComponent === "Login") setAuthComponent("Register");
-    else setAuthComponent("Login");
+    switch (component) {
+      case "Login":
+        setTitle("ورود");
+        setActionButtonText("ورود");
+        break;
+      case "Register":
+        setTitle("ثبت نام با ایمیل");
+        setActionButtonText("ثبت نام");
+        break;
+      case "ForgotPassword":
+        setTitle("بازیابی رمز ورود");
+        setActionButtonText("ارسال لینک بازیابی");
+        break;
+    }
+
+    setAuthComponent(component);
+  };
+
+  const login = (identifier: string, password: string) => {
+    axios
+      .post("api/login", {
+        identifier,
+        password,
+      })
+      .then((response) => {
+        console.log("User logged in:", response.data.user);
+        console.log("User token:", response.data.jwt);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  };
+
+  const register = (username: string, email: string, password: string) => {
+    axios
+      .post("api/register", {
+        username,
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log("User registered:", response.data.user);
+        console.log("User token:", response.data.jwt);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  };
+
+  const forgotPass = (email: string) => {
+    axios.post("api/forgot-password", {
+      email,
+    });
+  };
+
+  const submitForm = (email: string, password: string, username: string) => {
+    if (authComponent === "Login") {
+      login(email, password);
+    } else if (authComponent === "Register") {
+      register(username, email, password);
+    } else {
+      forgotPass(email);
+    }
   };
 
   return (
@@ -105,32 +176,53 @@ export default function AuthDialog() {
         <DialogContentWrapper>
           <SampleImg></SampleImg>
           <DialogBody className={customDialogStyles.body}>
-            <DialogTitle className={customDialogStyles.title}>ورود</DialogTitle>
-            <SubHeader>با یکی از دو روش زیر می‌توانید وارد شوید.</SubHeader>
+            <DialogTitle className={customDialogStyles.title}>{title}</DialogTitle>
+            <SubHeader>
+              {authComponent === "ForgotPassword"
+                ? "لطفا ایمیل خود را وارد نمایید."
+                : "با یکی از دو روش زیر می‌توانید وارد شوید."}
+            </SubHeader>
             <DialogContent className={customDialogStyles.content}>
-              {/* Use React.Suspense to render a fallback while loading the component */}
-              <Suspense fallback={<div>Loading...</div>}>
-                {AuthComponent && <AuthComponent />}
-              </Suspense>
+              {authComponent === "Login" && (
+                <Login
+                  email={email}
+                  onChangeEmail={onChangeEmail}
+                  password={password}
+                  onChangePassword={onChangePassword}
+                />
+              )}
+              {authComponent === "Register" && (
+                <Register
+                  password={password}
+                  onChangePassword={onChangePassword}
+                  username={username}
+                  onChangeUsername={onChangeUsername}
+                  email={email}
+                  onChangeEmail={onChangeEmail}
+                />
+              )}
+              {authComponent === "ForgotPassword" && (
+                <ForgotPassword email={email} onChangeEmail={onChangeEmail} />
+              )}
             </DialogContent>
             <DialogActions className={customDialogStyles.actions}>
               {authComponent === "Login" && (
                 <Button
                   appearance="transparent"
                   size="large"
-                  className={customDialogStyles.rightButton}
+                  className={customDialogStyles.linkButton}
                   onClick={() => changeAuthComponent("ForgotPassword")}
                 >
                   بازیابی رمز ورود
                 </Button>
               )}
               <ButtonBlock appearance="primary" size="large">
-                ورود
+                {actionButtonText}
               </ButtonBlock>
               <ButtonBlock
                 appearance="transparent"
                 size="large"
-                onClick={changeAuthComponent}
+                onClick={() => changeAuthComponent(null)}
               >
                 {authComponent === "Login" ? "ثبت نام" : "بازگشت"}
               </ButtonBlock>
