@@ -1,6 +1,6 @@
-import * as React from "react";
+import { Suspense, lazy, useState } from "react";
 
-import Login from "./Login";
+import ButtonBlock from "../Common/Button/ButtonBlock";
 
 import {
   Dialog,
@@ -14,7 +14,6 @@ import {
   makeStyles,
 } from "@fluentui/react-components";
 import styled from "styled-components";
-import ButtonBlock from "../Common/Button/ButtonBlock";
 
 const useCustomDialogStyles = makeStyles({
   surface: {
@@ -36,6 +35,13 @@ const useCustomDialogStyles = makeStyles({
   },
   actions: {
     flexDirection: "column",
+    rowGap: "0",
+    "> button": {
+      marginBottom: "var(--spacingVerticalMNudge)",
+    },
+  },
+  rightButton: {
+    alignSelf: "flex-start",
   },
 });
 
@@ -60,8 +66,35 @@ const SampleImg = styled.div`
   border-radius: 16px;
 `;
 
+// A function that returns the component based on the authComponent state value
+function getAuthComponent(authComponent: string) {
+  switch (authComponent) {
+    case "Login":
+      return lazy(() => import("./Login"));
+    case "Register":
+      return lazy(() => import("./Register"));
+    case "ForgotPassword":
+      return lazy(() => import("./ForgotPassword"));
+    default:
+      return null;
+  }
+}
+
 export default function AuthDialog() {
+  const [authComponent, setAuthComponent] = useState("Login");
   const customDialogStyles = useCustomDialogStyles();
+
+  // Get the component based on the authComponent state value
+  const AuthComponent = getAuthComponent(authComponent);
+
+  const changeAuthComponent = (
+    component: "Register" | "Login" | "ForgotPassword" | "" = ""
+  ) => {
+    if (component) setAuthComponent(component);
+    else if (authComponent === "Login") setAuthComponent("Register");
+    else setAuthComponent("Login");
+  };
+
   return (
     <Dialog>
       <DialogTrigger disableButtonEnhancement>
@@ -75,14 +108,31 @@ export default function AuthDialog() {
             <DialogTitle className={customDialogStyles.title}>ورود</DialogTitle>
             <SubHeader>با یکی از دو روش زیر می‌توانید وارد شوید.</SubHeader>
             <DialogContent className={customDialogStyles.content}>
-              <Login />
+              {/* Use React.Suspense to render a fallback while loading the component */}
+              <Suspense fallback={<div>Loading...</div>}>
+                {AuthComponent && <AuthComponent />}
+              </Suspense>
             </DialogContent>
             <DialogActions className={customDialogStyles.actions}>
+              {authComponent === "Login" && (
+                <Button
+                  appearance="transparent"
+                  size="large"
+                  className={customDialogStyles.rightButton}
+                  onClick={() => changeAuthComponent("ForgotPassword")}
+                >
+                  بازیابی رمز ورود
+                </Button>
+              )}
               <ButtonBlock appearance="primary" size="large">
                 ورود
               </ButtonBlock>
-              <ButtonBlock appearance="transparent" size="large">
-                ثبت نام
+              <ButtonBlock
+                appearance="transparent"
+                size="large"
+                onClick={changeAuthComponent}
+              >
+                {authComponent === "Login" ? "ثبت نام" : "بازگشت"}
               </ButtonBlock>
             </DialogActions>
           </DialogBody>
