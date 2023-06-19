@@ -34,7 +34,7 @@ export default function InputLarge(props: Props) {
   const styles = useStyles();
   return (
     <div className={styles.wrapper}>
-      <Label className={styles.label}>{props.label}</Label>
+      <Label htmlFor={props.id} className={styles.label}>{props.label}</Label>
       <Input {...props} className={`${props.className} ${styles.input}`} />
     </div>
   );
