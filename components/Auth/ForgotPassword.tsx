@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Button, Input, Label, InputProps } from "@fluentui/react-components";
 import { useState } from "react";
 
-export default function ResetPass() {
+export default function ForgotPassword() {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [email, setEmail] = useState("");
