@@ -1,10 +1,20 @@
 import axios from "axios";
 
-import { InputProps } from "@fluentui/react-components";
+import { Button, InputProps, makeStyles } from "@fluentui/react-components";
 import { useState } from "react";
 import ButtonBlock from "../Common/Button/ButtonBlock";
 import InputLarge from "../Common/Input/InputLarge";
 import styled from "styled-components";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+
+const useStyles = makeStyles({
+  passToggleBtn: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    width: "fit-content",
+    minWidth: "fit-content",
+  },
+});
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,31 +43,37 @@ const Divider = styled.div`
     color: var(--colorNeutralForeground3);
   }
 `;
-export default function Login() {
-  const [identifier, setIdentifier] = useState("");
-  const [password, setPassword] = useState("");
 
-  const onChangeUsername: InputProps["onChange"] = (ev, data) => {
-    setIdentifier(data.value);
-  };
-  const onChangePass: InputProps["onChange"] = (ev, data) => {
-    setPassword(data.value);
+type Props = {
+  email: string;
+  onChangeEmail: Function;
+  password: string;
+  onChangePassword: Function;
+};
+
+export default function Login(props: Props) {
+  const { email, onChangeEmail, password, onChangePassword } = props;
+
+  const styles = useStyles();
+
+  const [showPass, setShowPass] = useState(false);
+
+  const togglePass = () => {
+    const toggle = !showPass;
+    setShowPass(toggle);
   };
 
-  const login = () => {
-    axios
-      .post("api/login", {
-        identifier,
-        password,
-      })
-      .then((response) => {
-        console.log("User logged in:", response.data.user);
-        console.log("User token:", response.data.jwt);
-      })
-      .catch((error) => {
-        console.log("An error occurred:", error.response);
-      });
-  };
+  const togglerBtn = (
+    <Button
+      onClick={togglePass}
+      appearance="transparent"
+      size="small"
+      className={styles.passToggleBtn}
+    >
+      {showPass ? <EyeIcon height={20} /> : <EyeSlashIcon height={20} />}
+    </Button>
+  );
+
   return (
     <Wrapper>
       <a href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/api/connect/google`}>
@@ -73,18 +89,14 @@ export default function Login() {
         <span>یا</span>
       </Divider>
 
-      <InputLarge
-        label="ایمیل"
-        onChange={onChangeUsername}
-        value={identifier}
-        id="input-username"
-      />
+      <InputLarge label="ایمیل" onChange={onChangeEmail} value={email} id="input-username" />
       <InputLarge
         label="رمز ورود"
-        onChange={onChangePass}
+        onChange={onChangePassword}
         value={password}
-        type="password"
+        type={showPass ? "text" : "password"}
         id="input-password"
+        contentAfter={togglerBtn}
       />
     </Wrapper>
   );

@@ -1,60 +1,79 @@
 import axios from "axios";
 
-import { Button, Input, Label, InputProps } from "@fluentui/react-components";
+import { Button, InputProps, makeStyles } from "@fluentui/react-components";
 
 import { useState } from "react";
+import styled from "styled-components";
+import InputLarge from "../Common/Input/InputLarge";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-export default function Register() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const useStyles = makeStyles({
+  passToggleBtn: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    width: "fit-content",
+    minWidth: "fit-content",
+  },
+});
 
-  const onChangeUsername: InputProps["onChange"] = (ev, data) => {
-    setUsername(data.value);
-  };
-  const onChangeEmail: InputProps["onChange"] = (ev, data) => {
-    setEmail(data.value);
-  };
-  const onChangePass: InputProps["onChange"] = (ev, data) => {
-    setPassword(data.value);
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacingVerticalXXL) 0;
+  padding: var(--spacingVerticalXXL) 0;
+`;
+
+type Props = {
+  email: string;
+  onChangeEmail: Function;
+  username: string;
+  onChangeUsername: Function;
+  password: string;
+  onChangePassword: Function;
+};
+export default function Register(props: Props) {
+  const { email, onChangeEmail, username, onChangeUsername, password, onChangePassword } = props;
+
+  const styles = useStyles();
+
+  const [showPass, setShowPass] = useState(false);
+
+  const togglePass = () => {
+    const toggle = !showPass;
+    setShowPass(toggle);
   };
 
-  const register = () => {
-    axios
-      .post("api/register", {
-        username,
-        email,
-        password,
-      })
-      .then((response) => {
-        console.log("User registered:", response.data.user);
-        console.log("User token:", response.data.jwt);
-      })
-      .catch((error) => {
-        console.log("An error occurred:", error.response);
-      });
-  };
+  const togglerBtn = (
+    <Button
+      onClick={togglePass}
+      appearance="transparent"
+      size="small"
+      className={styles.passToggleBtn}
+    >
+      {showPass ? <EyeIcon height={20} /> : <EyeSlashIcon height={20} />}
+    </Button>
+  );
 
   return (
-    <div>
-      <div>
-        <Label htmlFor="input-email">Email input</Label>
-        <Input onChange={onChangeEmail} value={email} type="email" id="input-email" />
-      </div>
+    <Wrapper>
+      <InputLarge label="ایمیل" onChange={onChangeEmail} value={email} id="input-email" />
 
-      <div>
-        <Label htmlFor="input-username">Username input</Label>
-        <Input onChange={onChangeUsername} value={username} id="input-username" />
-      </div>
+      <InputLarge
+        label="نام کاربری"
+        onChange={onChangeUsername}
+        value={username}
+        id="input-username"
+      />
 
-      <div>
-        <Label htmlFor="input-password">Password input</Label>
-        <Input onChange={onChangePass} value={password} type="password" id="input-password" />
-      </div>
-
-      <Button appearance="primary" onClick={register}>
-        Register
-      </Button>
-    </div>
+      <InputLarge
+        label="رمز ورود"
+        onChange={onChangePassword}
+        value={password}
+        type={showPass ? "text" : "password"}
+        id="input-password"
+        contentAfter={togglerBtn}
+      />
+    </Wrapper>
   );
 }

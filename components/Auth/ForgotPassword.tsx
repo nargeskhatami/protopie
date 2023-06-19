@@ -3,42 +3,38 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Button, Input, Label, InputProps } from "@fluentui/react-components";
 import { useState } from "react";
+import styled from "styled-components";
+import InputLarge from "@/components/Common/Input/InputLarge";
 
-export default function ForgotPassword() {
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [email, setEmail] = useState("");
-  const router = useRouter();
-  
-  const onChangePass: InputProps["onChange"] = (ev, data) => {
-    setPassword(data.value);
-  };
-  const onChangePassConfirm: InputProps["onChange"] = (ev, data) => {
-    setPasswordConfirm(data.value);
-  };
-  const onChangeEmail: InputProps["onChange"] = (ev, data) => {
-    setEmail(data.value);
-  };
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacingVerticalXXL) 0;
+  padding: var(--spacingVerticalXXL) 0;
+`;
+type Props = {
+  email: string;
+  onChangeEmail: Function;
+};
+export default function ForgotPassword(props: Props) {
+  const { email, onChangeEmail } = props;
 
-  const forgot = async () => {
-    axios.post("api/forgot-password", {
-      email,
-    });
-  };
+  // const router = useRouter();
 
-  const reset = async () => {
-    if (router.query.code)
-      axios.post("api/reset-password", {
-        code: router.query.code,
-        password,
-        passwordConfirmation: passwordConfirm,
-      });
-  };
+  // const reset = async () => {
+  //   if (router.query.code)
+  //     axios.post("api/reset-password", {
+  //       code: router.query.code,
+  //       password,
+  //       passwordConfirmation: passwordConfirm,
+  //     });
+  // };
 
   return (
-    <>
-      <div>
-        <div>
+    <Wrapper>
+      <InputLarge label="ایمیل" onChange={onChangeEmail} value={email} id="input-email" />
+      {/* <div>
           <Label htmlFor="input-email">Email input</Label>
           <Input onChange={onChangeEmail} value={email} type="email" id="input-email" />
         </div>
@@ -66,8 +62,7 @@ export default function ForgotPassword() {
 
         <Button appearance="primary" onClick={reset}>
           Reset Pass
-        </Button>
-      </div>
-    </>
+        </Button> */}
+    </Wrapper>
   );
 }
