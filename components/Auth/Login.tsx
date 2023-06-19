@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { Button, InputProps } from "@fluentui/react-components";
+import { InputProps } from "@fluentui/react-components";
 import { useState } from "react";
 import ButtonBlock from "../Common/Button/ButtonBlock";
 import InputLarge from "../Common/Input/InputLarge";
@@ -86,10 +86,6 @@ export default function Login() {
         type="password"
         id="input-password"
       />
-
-      <Button size="large" appearance="transparent" onClick={login}>
-        بازیابی رمز ورود
-      </Button>
     </Wrapper>
   );
 }
