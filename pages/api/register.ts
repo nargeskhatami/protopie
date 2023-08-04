@@ -7,15 +7,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case "POST":
       try {
         const { username, email, password } = req.body;
-        const post = await axios.post(process.env.AUTH_BASEURL + "/local/auth/register", {
+
+        const post = await axios.post(`${process.env.APP_AUTH_API_BASEURL}/local/auth/register`, {
           username,
           email,
           password,
         });
+
         res.status(200).json(post.data);
       } catch (error) {
-        console.error(error);
-        res.status(500).json(error.response.data.error);
+        res.status(500).json(error);
       }
       break;
     default:

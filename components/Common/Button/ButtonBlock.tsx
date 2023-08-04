@@ -1,21 +1,6 @@
-import { Button, ButtonProps, makeStyles } from "@fluentui/react-components";
+import { Button, ButtonProps, makeStyles, tokens } from "@fluentui/react-components";
 
-const useStyles = makeStyles({
-  block: {
-    width: "100%",
-    height: "56px",
-    "> span": {
-      marginLeft: "var(--spacingHorizontalM)",
-      marginRight: "var(--spacingHorizontalM)",
-    },
-  },
-});
-
-type Props = React_2.ForwardRefExoticComponent<
-  ButtonProps & React_2.RefAttributes<HTMLButtonElement | HTMLAnchorElement>
-> & { children?: React.ReactNode };
-
-export default function ButtonFullWidth(props: Props) {
+export default function ButtonFullWidth(props: ButtonProps) {
   const styles = useStyles();
   return (
     <Button {...props} className={`${props.className} ${styles.block}`}>
@@ -23,3 +8,16 @@ export default function ButtonFullWidth(props: Props) {
     </Button>
   );
 }
+
+const useStyles = makeStyles({
+  block: {
+    fontWeight: tokens.fontWeightRegular,
+    fontSize: tokens.fontSizeBase300,
+    width: "100%",
+    height: "56px",
+    "> span": {
+      marginLeft: tokens.spacingHorizontalM,
+      marginRight: tokens.spacingHorizontalM,
+    },
+  },
+});

@@ -1,11 +1,25 @@
-import {
-  Label,
-  Input,
-  makeStyles,
-  shorthands,
-  InputSlots,
-  ComponentProps,
-} from "@fluentui/react-components";
+import { Input, InputProps, Label, makeStyles, shorthands } from "@fluentui/react-components";
+import styled from "styled-components";
+
+type Props = InputProps & { label?: string; error: string };
+
+export default function InputLarge(props: Props) {
+  const styles = useStyles();
+  const { id, label, error, ...inputProps } = props;
+
+  const labelClassName = `${error ? styles.errorLabel : styles.label}`;
+  const inputClassName = `${error ? styles.errorInput : styles.input}`;
+
+  return (
+    <div className={styles.wrapper}>
+      <Label htmlFor={id} className={labelClassName}>
+        {label}
+      </Label>
+      <Input {...inputProps} className={inputClassName} />
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+    </div>
+  );
+}
 
 const useStyles = makeStyles({
   wrapper: {
@@ -19,23 +33,20 @@ const useStyles = makeStyles({
   input: {
     height: "56px",
   },
+  errorLabel: {
+    textAlign: "start",
+    color: "var(--colorPaletteRedBorder1)",
+  },
+  errorInput: {
+    height: "56px",
+    borderTopColor: "var(--colorPaletteRedBorder1)",
+    borderBottomColor: "var(--colorPaletteRedBorder1)",
+    borderLeftColor: "var(--colorPaletteRedBorder1)",
+    borderRightColor: "var(--colorPaletteRedBorder1)",
+  },
 });
 
-type Props = React_2.ForwardRefExoticComponent<
-  Omit<
-    ComponentProps<Partial<InputSlots>, "input">,
-    "children" | "size" | "type" | "value" | "onChange" | "defaultValue"
-  > & {
-    (Missing: any): any;
-  } & React_2.RefAttributes<HTMLInputElement>
-> & { label?: string };
-
-export default function InputLarge(props: Props) {
-  const styles = useStyles();
-  return (
-    <div className={styles.wrapper}>
-      <Label htmlFor={props.id} className={styles.label}>{props.label}</Label>
-      <Input {...props} className={`${props.className} ${styles.input}`} />
-    </div>
-  );
-}
+const ErrorMessage = styled.p`
+  color: var(--colorPaletteRedBorder1);
+  font-size: var(--fontSizeBase200);
+`;

@@ -1,11 +1,96 @@
-import axios from "axios";
-
 import { Button, InputProps, makeStyles } from "@fluentui/react-components";
 import { useState } from "react";
 import ButtonBlock from "../Common/Button/ButtonBlock";
 import InputLarge from "../Common/Input/InputLarge";
 import styled from "styled-components";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { Controller, useFormContext } from "react-hook-form";
+
+type Props = {
+  email: string;
+  onChangeEmail: Function;
+  password: string;
+  onChangePassword: Function;
+};
+
+export default function Login(props: Props) {
+  const { email, onChangeEmail, password, onChangePassword } = props;
+
+  const styles = useStyles();
+
+  const [showPass, setShowPass] = useState(false);
+
+  const togglePass = () => {
+    const toggle = !showPass;
+    setShowPass(toggle);
+  };
+
+  const togglerBtn = (
+    <Button
+      onClick={togglePass}
+      appearance="transparent"
+      size="small"
+      className={styles.passToggleBtn}
+    >
+      {showPass ? <EyeIcon height={20} /> : <EyeSlashIcon height={20} />}
+    </Button>
+  );
+
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  return (
+    <Wrapper>
+      <a href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/api/connect/google`}>
+        <ButtonBlock size="large">
+          <span>ورود با گوگل</span>
+          <svg width={20} height={20}>
+            <use href={`/sprite.svg#google`} />
+          </svg>
+        </ButtonBlock>
+      </a>
+
+      <Divider>
+        <span>یا</span>
+      </Divider>
+
+      <Controller
+        name="email"
+        rules={{ required: "ایمیل اجباری است" }}
+        control={control}
+        render={({ field }) => (
+          <InputLarge
+            {...field}
+            label="ایمیل"
+            onChange={onChangeEmail}
+            value={email}
+            error={errors.email?.message}
+            id="input-email"
+          />
+        )}
+      />
+      <Controller
+        name="password"
+        rules={{ required: "رمز ورود اجباری است" }}
+        control={control}
+        render={({ field }) => (
+          <InputLarge
+            {...field}
+            label="رمز ورود"
+            onChange={onChangePassword}
+            value={password}
+            type={showPass ? "text" : "password"}
+            id="input-password"
+            error={errors.password?.message}
+            contentAfter={togglerBtn}
+          />
+        )}
+      />
+    </Wrapper>
+  );
+}
 
 const useStyles = makeStyles({
   passToggleBtn: {
@@ -43,61 +128,3 @@ const Divider = styled.div`
     color: var(--colorNeutralForeground3);
   }
 `;
-
-type Props = {
-  email: string;
-  onChangeEmail: Function;
-  password: string;
-  onChangePassword: Function;
-};
-
-export default function Login(props: Props) {
-  const { email, onChangeEmail, password, onChangePassword } = props;
-
-  const styles = useStyles();
-
-  const [showPass, setShowPass] = useState(false);
-
-  const togglePass = () => {
-    const toggle = !showPass;
-    setShowPass(toggle);
-  };
-
-  const togglerBtn = (
-    <Button
-      onClick={togglePass}
-      appearance="transparent"
-      size="small"
-      className={styles.passToggleBtn}
-    >
-      {showPass ? <EyeIcon height={20} /> : <EyeSlashIcon height={20} />}
-    </Button>
-  );
-
-  return (
-    <Wrapper>
-      <a href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/api/connect/google`}>
-        <ButtonBlock size="large">
-          <span>ورود با گوگل</span>
-          <svg width={20} height={20}>
-            <use href={`/sprite.svg#google`} />
-          </svg>
-        </ButtonBlock>
-      </a>
-
-      <Divider>
-        <span>یا</span>
-      </Divider>
-
-      <InputLarge label="ایمیل" onChange={onChangeEmail} value={email} id="input-username" />
-      <InputLarge
-        label="رمز ورود"
-        onChange={onChangePassword}
-        value={password}
-        type={showPass ? "text" : "password"}
-        id="input-password"
-        contentAfter={togglerBtn}
-      />
-    </Wrapper>
-  );
-}
