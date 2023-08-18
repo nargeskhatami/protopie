@@ -10,6 +10,16 @@ import Head from "next/head";
 import Image from "next/image";
 import styled from "styled-components";
 import brainstormPic from "../public/images/brainstorm.png";
+import brainstormMobilePic from "../public/images/brainstorm-m.png";
+import useIsMobile from "@/hooks/useIsMobile";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper as SwiperType } from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { useRef, useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 type Props = {
   footerInfo: FooterInfo;
@@ -54,6 +64,14 @@ export default function Home(props: Props) {
       image: "/images/learn-protopite.png",
     },
   ];
+  const isMobile = useIsMobile();
+  const swiperRef = useRef<SwiperType>();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const updateActiveIndex = (swiperInstance: SwiperType) => {
+    if (swiperInstance === null) return;
+    const currentSlide = swiperInstance?.activeIndex;
+    setActiveIndex(currentSlide);
+  };
   return (
     <Layout footerInfo={footerInfo} navigation={navigation}>
       <Head>
@@ -62,19 +80,78 @@ export default function Home(props: Props) {
       </Head>
       <Container>
         <Hero data={hero} />
-        <Brainstorm column align="center" justify="center" gap={tokens.spacingHorizontalMNudge}>
+        <Brainstorm
+          column
+          align="center"
+          justify="center"
+          gap={tokens.spacingHorizontalMNudge}
+          isMobile={isMobile}
+        >
           <Heading title={brainstorm?.title} subtitle={brainstorm?.subTitle} />
-          <Image src={brainstormPic} alt="Brainstorm" />
+          {isMobile ? (
+            <Image
+              src={brainstormMobilePic}
+              alt="Brainstorm"
+              style={{ padding: "1rem" }}
+            />
+          ) : (
+            <Image src={brainstormPic} alt="Brainstorm" />
+          )}
         </Brainstorm>
         <Flex column align="center" justify="center">
           <Heading title="بلاگ" subtitle="نکات آموزشی، اخبار، ترفند و ..." />
-          <Flex>
-            {blogs.map((blog, index) => (
-              <BlogCard key={`blog-${index}`} {...blog} />
-            ))}
-          </Flex>
+
+          {isMobile ? (
+            <>
+              <Swiper
+                onBeforeInit={(swiper) => {
+                  swiperRef.current = swiper;
+                }}
+                dir="rtl"
+                slidesPerView={"auto"}
+                centeredSlides={true}
+                modules={[Navigation, Pagination]}
+                className="mySwiper"
+                onActiveIndexChange={updateActiveIndex}
+              >
+                {blogs.map((blog, index) => (
+                  <SwiperSlide key={`blog-${index}`}>
+                    <BlogCard {...blog} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <Flex
+                gap={tokens.spacingVerticalS}
+                justify="center"
+                align="center"
+              >
+                <ChevronRightIcon
+                  width={32}
+                  height={32}
+                  onClick={() => swiperRef.current?.slidePrev()}
+                />
+                {blogs.map((blog, index) => (
+                  <CircleIcon
+                    isCurrent={index === activeIndex}
+                    onClick={() => swiperRef.current?.slideTo(index)}
+                  />
+                ))}
+                <ChevronLeftIcon
+                  width={32}
+                  height={32}
+                  onClick={() => swiperRef.current?.slideNext()}
+                />
+              </Flex>
+            </>
+          ) : (
+            <Flex>
+              {blogs.map((blog, index) => (
+                <BlogCard key={`blog-${index}`} {...blog} />
+              ))}
+            </Flex>
+          )}
         </Flex>
-        <Space></Space>
+        <Space isMobile={isMobile} />
       </Container>
     </Layout>
   );
@@ -82,27 +159,49 @@ export default function Home(props: Props) {
 
 export async function getServerSideProps() {
   try {
-    const homepage = await axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/homepage");
-    const navigation = await axios(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation");
+    const homepage = await axios.get(
+      process.env.NEXT_PUBLIC_APP_BASEURL + "/api/homepage",
+    );
+    const navigation = await axios(
+      process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation",
+    );
     return {
       props: {
         ...homepage.data,
         navigation: navigation.data,
       },
     };
-  } catch (error) {}
+  } catch (error) {
+    return;
+  }
 }
 
-const Brainstorm = styled(Flex)`
-  padding: ${tokens.spacingVerticalXXXL}, 0px, ${tokens.spacingVerticalXXXL}, 0px;
+const CircleIcon = styled.i<{ isCurrent: boolean }>`
+  width: ${(props) => (props.isCurrent ? "8px" : "3px")};
+  height: ${(props) => (props.isCurrent ? "8px" : "3px")};
+  background-color: ${(props) =>
+    props.isCurrent
+      ? tokens.colorBrandForeground1
+      : tokens.colorNeutralForeground2};
+  border-radius: 50%;
+`;
+const Brainstorm = styled(Flex)<{ isMobile: boolean }>`
+  padding: ${tokens.spacingVerticalXXXL}, 0px, ${tokens.spacingVerticalXXXL},
+    0px;
   height: 625px;
-  background-image: linear-gradient(rgb(41 41 41 / 50%), rgb(41 41 41 / 50%)), url(images/lines.png);
+  background-image: ${(props) =>
+    props.isMobile
+      ? "initial"
+      : "linear-gradient(rgb(41 41 41 / 50%), rgb(41 41 41 / 50%)),\n    url(images/lines.png)"};
   box-shadow: inset 0 0 140px 20px ${tokens.colorNeutralBackground1};
 `;
 
-const Space = styled.div`
-  height: 200px;
-  background-image: linear-gradient(rgb(41 41 41 / 50%), rgb(41 41 41 / 50%)), url(images/lines.png);
+const Space = styled.div<{ isMobile: boolean }>`
+  height: ${(props) => (props.isMobile ? "20px" : "200px")};
+  background-image: ${(props) =>
+    props.isMobile
+      ? "initial"
+      : "linear-gradient(rgb(41 41 41 / 50%), rgb(41 41 41 / 50%)), url(images/lines.png)"};
   margin: ${tokens.spacingVerticalXXXL} 0;
   box-shadow: inset 0 0 140px 20px ${tokens.colorNeutralBackground1};
 }
