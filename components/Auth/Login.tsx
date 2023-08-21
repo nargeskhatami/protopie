@@ -1,5 +1,5 @@
-import { Button, InputProps, makeStyles } from "@fluentui/react-components";
-import { useState } from "react";
+import { Button, InputOnChangeData, InputProps, makeStyles } from "@fluentui/react-components";
+import { ChangeEvent, useState } from "react";
 import ButtonBlock from "../Common/Button/ButtonBlock";
 import InputLarge from "../Common/Input/InputLarge";
 import styled from "styled-components";
@@ -8,9 +8,9 @@ import { Controller, useFormContext } from "react-hook-form";
 
 type Props = {
   email: string;
-  onChangeEmail: Function;
+  onChangeEmail: (ev: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void
   password: string;
-  onChangePassword: Function;
+  onChangePassword: (ev: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void;
 };
 
 export default function Login(props: Props) {
@@ -66,7 +66,7 @@ export default function Login(props: Props) {
             label="ایمیل"
             onChange={onChangeEmail}
             value={email}
-            error={errors.email?.message}
+            error={errors.email?.message as string}
             id="input-email"
           />
         )}
@@ -83,7 +83,7 @@ export default function Login(props: Props) {
             value={password}
             type={showPass ? "text" : "password"}
             id="input-password"
-            error={errors.password?.message}
+            error={errors.password?.message as string}
             contentAfter={togglerBtn}
           />
         )}

@@ -1,10 +1,13 @@
 import InputLarge from "@/components/Common/Input/InputLarge";
+import { InputOnChangeData } from "@fluentui/react-components";
+import { ChangeEvent } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
 type Props = {
   email: string;
-  onChangeEmail: Function;
+  onChangeEmail: (ev: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void
+  ;
 };
 
 export default function ForgotPassword(props: Props) {
@@ -27,7 +30,7 @@ export default function ForgotPassword(props: Props) {
             label="ایمیل"
             onChange={onChangeEmail}
             value={email}
-            error={errors.email?.message}
+            error={errors.email?.message as string}
             id="input-email"
           />
         )}

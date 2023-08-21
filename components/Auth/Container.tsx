@@ -45,7 +45,8 @@ export default function AuthDialog() {
   const customDialogStyles = useCustomDialogStyles();
 
   const changeAuthComponent = (component: AuthComponent | null = null) => {
-    if (!component) component = authComponent === "Login" ? "Register" : "Login";
+    if (!component)
+      component = authComponent === "Login" ? "Register" : "Login";
 
     switch (component) {
       case "Login":
@@ -101,8 +102,15 @@ export default function AuthDialog() {
       email,
     });
   };
-
-  const submitForm = (email: string, password: string, username: string) => {
+  const submitForm = ({
+    email,
+    password,
+    username,
+  }: {
+    email: string;
+    password: string;
+    username: string;
+  }) => {
     if (authComponent === "Login") {
       login(email, password);
     } else if (authComponent === "Register") {
@@ -139,7 +147,9 @@ export default function AuthDialog() {
         <DialogContentWrapper>
           <SampleImg></SampleImg>
           <DialogBody className={customDialogStyles.body}>
-            <DialogTitle className={customDialogStyles.title}>{title}</DialogTitle>
+            <DialogTitle className={customDialogStyles.title}>
+              {title}
+            </DialogTitle>
             <SubHeader>
               {authComponent === "ForgotPassword"
                 ? "لطفا ایمیل خود را وارد نمایید."
@@ -239,6 +249,7 @@ const DialogContentWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   & > div {
     flex: 0 0 calc(50% - 24px);
   }

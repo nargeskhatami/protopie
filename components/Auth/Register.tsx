@@ -1,17 +1,17 @@
-import { Button, makeStyles } from "@fluentui/react-components";
+import { Button, InputOnChangeData, makeStyles } from "@fluentui/react-components";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 import InputLarge from "../Common/Input/InputLarge";
 
 type Props = {
   email: string;
-  onChangeEmail: Function;
+  onChangeEmail: (ev: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void;
   username: string;
-  onChangeUsername: Function;
+  onChangeUsername: (ev: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void;
   password: string;
-  onChangePassword: Function;
+  onChangePassword: (ev: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void;
 };
 
 export default function Register(props: Props) {
@@ -54,7 +54,7 @@ export default function Register(props: Props) {
             label="ایمیل"
             onChange={onChangeEmail}
             value={email}
-            error={errors.email?.message}
+            error={errors.email?.message as string}
             id="input-email"
           />
         )}
@@ -69,7 +69,7 @@ export default function Register(props: Props) {
             label="نام کاربری"
             onChange={onChangeUsername}
             value={username}
-            error={errors.username?.message}
+            error={errors.username?.message as string}
             id="input-username"
           />
         )}
@@ -86,7 +86,7 @@ export default function Register(props: Props) {
             value={password}
             type={showPass ? "text" : "password"}
             id="input-password"
-            error={errors.password?.message}
+            error={errors.password?.message as string}
             contentAfter={togglerBtn}
           />
         )}
