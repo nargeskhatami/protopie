@@ -14,33 +14,33 @@ import styled from "styled-components";
 import Col from "../Common/Grid/Col";
 import Flex from "../Common/Grid/Flex";
 
-type Props = {
-  category: string;
-  categoryLink?: string;
-  title: string;
-  readTime: number;
-  url: string;
-  image: string;
-};
+type Props = Blog & { size?: number };
 
 export default function BlogCard(props: Props) {
   const styles = useStyles();
-  const { category, title, readTime, url, image, categoryLink } = props;
+  const { size = 12, attributes } = props;
+  const { category, title, readDuration, slug, image, category_id } =
+    attributes;
   return (
-    <Col>
+    <Col size={size}>
       <Card appearance="subtle" className={styles.Card}>
         <CardPreview className={styles.CardPreview}>
-          <img src={image} alt={title} className={styles.img} />
+          <img src={image.data} alt={title} className={styles.img} />
         </CardPreview>
         <CardHeader
           className={styles.CardHeader}
           header={
             <Flex justify="between">
               <Flex align="center" gap={8}>
-                <Link href={categoryLink} className={styles.categoryLink}>
-                  <Caption1>{category}</Caption1>
+                <Link
+                  href={category_id.data.attributes.category}
+                  className={styles.categoryLink}
+                >
+                  <Caption1>{category_id.data.attributes.category}</Caption1>
                 </Link>
-                <Caption1 className={styles.readTime}>{`${readTime} دقیقه مطالعه`}</Caption1>
+                <Caption1
+                  className={styles.readDuration}
+                >{`${readDuration} دقیقه مطالعه`}</Caption1>
               </Flex>
               <LinkIcon width={20} height={20} />
             </Flex>
@@ -72,7 +72,7 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
   },
-  readTime: {
+  readDuration: {
     color: tokens.colorNeutralForeground4,
     height: "28px",
     display: "flex",

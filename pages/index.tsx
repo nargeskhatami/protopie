@@ -25,45 +25,12 @@ type Props = {
   footerInfo: FooterInfo;
   hero: Hero;
   navigation: Menu[];
+  blogs: Blog[];
   brainstorm: Brainstorm;
 };
 
 export default function Home(props: Props) {
-  const { footerInfo, hero, navigation, brainstorm } = props;
-  const blogs = [
-    {
-      category: "آموزش",
-      title: "نحوه ساخت نمونه اولیه HMI در واقعیت مجازی سه بعدی",
-      readTime: 4,
-      categoryLink: "/learn",
-      url: "/blog/learn-protopie",
-      image: "/images/learn-protopite.png",
-    },
-    {
-      category: "آموزش",
-      title: "نمونه سازی برای خودرو - مورد استفاده مرسدس",
-      readTime: 4,
-      categoryLink: "/learn",
-      url: "/blog/learn-protopie",
-      image: "/images/learn-protopite.png",
-    },
-    {
-      category: "آموزش",
-      title: "چگونه داده های واقعی را به نمونه های اولیه خود اضافه کنیم",
-      readTime: 4,
-      categoryLink: "/learn",
-      url: "/blog/learn-protopie",
-      image: "/images/learn-protopite.png",
-    },
-    {
-      category: "آموزش",
-      title: "چه خبر؟ معرفی فونت های سفارشی",
-      readTime: 4,
-      categoryLink: "/learn",
-      url: "/blog/learn-protopie",
-      image: "/images/learn-protopite.png",
-    },
-  ];
+  const { footerInfo, hero, navigation, brainstorm, blogs } = props;
   const isMobile = useIsMobile();
   const swiperRef = useRef<SwiperType>();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -101,53 +68,41 @@ export default function Home(props: Props) {
         <Flex column align="center" justify="center">
           <Heading title="بلاگ" subtitle="نکات آموزشی، اخبار، ترفند و ..." />
 
-          {isMobile ? (
-            <>
-              <Swiper
-                onBeforeInit={(swiper) => {
-                  swiperRef.current = swiper;
-                }}
-                dir="rtl"
-                slidesPerView={"auto"}
-                centeredSlides={true}
-                modules={[Navigation, Pagination]}
-                className="mySwiper"
-                onActiveIndexChange={updateActiveIndex}
-              >
-                {blogs.map((blog, index) => (
-                  <SwiperSlide key={`blog-${index}`}>
-                    <BlogCard {...blog} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-              <Flex
-                gap={tokens.spacingVerticalS}
-                justify="center"
-                align="center"
-              >
-                <ChevronRightIcon
-                  width={32}
-                  height={32}
-                  onClick={() => swiperRef.current?.slidePrev()}
-                />
-                {blogs.map((blog, index) => (
-                  <CircleIcon
-                    isCurrent={index === activeIndex}
-                    onClick={() => swiperRef.current?.slideTo(index)}
-                  />
-                ))}
-                <ChevronLeftIcon
-                  width={32}
-                  height={32}
-                  onClick={() => swiperRef.current?.slideNext()}
-                />
-              </Flex>
-            </>
-          ) : (
-            <Flex>
+          <Swiper
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            dir="rtl"
+            slidesPerView={isMobile ? "auto" : 4}
+            centeredSlides={isMobile}
+            modules={[Navigation, Pagination]}
+            onActiveIndexChange={updateActiveIndex}
+          >
+            {blogs.map((blog, index) => (
+              <SwiperSlide key={`blog-${index}`}>
+                <BlogCard {...blog} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          {(isMobile || blogs.length > 4) && (
+            <Flex gap={tokens.spacingVerticalS} justify="center" align="center">
+              <ChevronRightIcon
+                width={32}
+                height={32}
+                onClick={() => swiperRef.current?.slidePrev()}
+              />
               {blogs.map((blog, index) => (
-                <BlogCard key={`blog-${index}`} {...blog} />
+                <CircleIcon
+                  key={`blog-dot-${index}`}
+                  isCurrent={index === activeIndex}
+                  onClick={() => swiperRef.current?.slideTo(index)}
+                />
               ))}
+              <ChevronLeftIcon
+                width={32}
+                height={32}
+                onClick={() => swiperRef.current?.slideNext()}
+              />
             </Flex>
           )}
         </Flex>
@@ -159,16 +114,17 @@ export default function Home(props: Props) {
 
 export async function getServerSideProps() {
   try {
-    const homepage = await axios.get(
-      process.env.NEXT_PUBLIC_APP_BASEURL + "/api/homepage",
-    );
-    const navigation = await axios(
-      process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation",
-    );
+    const [homepage, blogs, navigation] = await Promise.all([
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/homepage"),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/blogs"),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation"),
+    ]);
+
     return {
       props: {
         ...homepage.data,
         navigation: navigation.data,
+        blogs: blogs.data,
       },
     };
   } catch (error) {
@@ -190,19 +146,16 @@ const Brainstorm = styled(Flex)<{ isMobile: boolean }>`
     0px;
   height: 625px;
   background-image: ${(props) =>
-    props.isMobile
-      ? "initial"
-      : "linear-gradient(rgb(41 41 41 / 50%), rgb(41 41 41 / 50%)),\n    url(images/lines.png)"};
-  box-shadow: inset 0 0 140px 20px ${tokens.colorNeutralBackground1};
+    props.isMobile ? "initial" : "url(images/lines-bg.png)"};
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center;
 `;
 
 const Space = styled.div<{ isMobile: boolean }>`
   height: ${(props) => (props.isMobile ? "20px" : "200px")};
   background-image: ${(props) =>
-    props.isMobile
-      ? "initial"
-      : "linear-gradient(rgb(41 41 41 / 50%), rgb(41 41 41 / 50%)), url(images/lines.png)"};
+    props.isMobile ? "initial" : "url(images/lines.png)"};
   margin: ${tokens.spacingVerticalXXXL} 0;
-  box-shadow: inset 0 0 140px 20px ${tokens.colorNeutralBackground1};
 }
 `;

@@ -32,7 +32,11 @@ export default function Footer(props: Props) {
       <Flex column={isMobile}>
         {isMobile && (
           <MobileWrapper>
-            <Flex column align="center" style={{ paddingBottom: tokens.spacingVerticalXXXL }}>
+            <Flex
+              column
+              align="center"
+              style={{ paddingBottom: tokens.spacingVerticalXXXL }}
+            >
               <svg width={242} height={50}>
                 <use href={`/sprite.svg#logo-grayscale`} />
               </svg>
@@ -43,8 +47,12 @@ export default function Footer(props: Props) {
             <Accordion collapsible multiple className={styles.accordion}>
               {footerInfo.links.map((menu, index) => (
                 <AccordionItem key={`menu-${index}`} value={index}>
-                  <AccordionHeader className={styles.accordionHeader}>{menu.title}</AccordionHeader>
-                  <AccordionPanel style={{ paddingTop: tokens.spacingVerticalXL }}>
+                  <AccordionHeader className={styles.accordionHeader}>
+                    {menu.title}
+                  </AccordionHeader>
+                  <AccordionPanel
+                    style={{ paddingTop: tokens.spacingVerticalXL }}
+                  >
                     <VerticalMenu menuIndex={index} menuItems={menu.subMenus} />
                   </AccordionPanel>
                 </AccordionItem>
@@ -56,7 +64,9 @@ export default function Footer(props: Props) {
               style={{ padding: `${tokens.spacingVerticalXXXL} 0` }}
               align="center"
             >
-              <Body1 className={styles.logoCaption}>شبکه‌های اجتماعی پروتوپای</Body1>
+              <Body1 className={styles.logoCaption}>
+                شبکه‌های اجتماعی پروتوپای
+              </Body1>
               <Flex gap={tokens.spacingHorizontalM} justify="center">
                 {footerInfo.SocialMedias.map((social, index) => (
                   <Link
@@ -87,7 +97,9 @@ export default function Footer(props: Props) {
                   </Caption1>
                 </Flex>
                 <Flex column gap={tokens.spacingVerticalS}>
-                  <Body1 className={styles.logoCaption}>شبکه‌های اجتماعی پروتوپای به فارسی</Body1>
+                  <Body1 className={styles.logoCaption}>
+                    شبکه‌های اجتماعی پروتوپای به فارسی
+                  </Body1>
                   <Flex gap={tokens.spacingHorizontalM}>
                     {footerInfo.SocialMedias.map((social, index) => (
                       <Link
@@ -97,7 +109,9 @@ export default function Footer(props: Props) {
                         key={`social-${index}`}
                       >
                         <svg width={24} height={24}>
-                          <use href={`/sprite.svg#${social.title.toLowerCase()}`} />
+                          <use
+                            href={`/sprite.svg#${social.title.toLowerCase()}`}
+                          />
                         </svg>
                       </Link>
                     ))}
@@ -108,8 +122,12 @@ export default function Footer(props: Props) {
             <Col size={8}>
               <Flex>
                 {footerInfo.links.map((menu, index) => (
-                  <Col key={`menu-${index}`}>
-                    <VerticalMenu menuIndex={index} title={menu.title} menuItems={menu.subMenus} />{" "}
+                  <Col key={`menu-${index}`} size={3}>
+                    <VerticalMenu
+                      menuIndex={index}
+                      title={menu.title}
+                      menuItems={menu.subMenus}
+                    />
                   </Col>
                 ))}
               </Flex>

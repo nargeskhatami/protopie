@@ -18,7 +18,10 @@ export default function VerticalMenu(props: Props) {
       {title && <Body1 as="h4">{title}</Body1>}
       <Menu>
         {menuItems.map((item, index) => (
-          <Body1 key={`menu-${menuIndex}-item-${index}`} className={styles.menuItem}>
+          <Body1
+            key={`menu-${menuIndex}-item-${index}`}
+            className={styles.menuItem}
+          >
             <MenuLink href={item.path}>{item.title}</MenuLink>
           </Body1>
         ))}

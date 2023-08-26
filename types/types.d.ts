@@ -56,3 +56,36 @@ interface Brainstorm {
   title: string;
   subTitle: string;
 }
+
+interface Blog {
+  id: number;
+  attributes: Attributes;
+}
+
+interface Attributes {
+  title: string;
+  readDuration: number;
+  slug: string;
+  image: Image;
+  category_id: Categoryid;
+}
+
+interface Categoryid {
+  data: Data;
+}
+
+interface Data {
+  id: number;
+  attributes: Attributes;
+}
+
+interface Attributes {
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+interface Image {
+  data?: string;
+}

@@ -12,6 +12,7 @@ export default function Col(props: Props) {
 }
 
 const Column = styled.div<Props>`
-  flex: ${(props) => (props.size ? props.size : 1)};
+  flex: 0 0 auto;
+  width: ${(props) => (props.size ? (props.size / 12) * 100 : 100)}%;
   padding: 0 ${tokens.spacingHorizontalM};
 `;
