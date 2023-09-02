@@ -1,7 +1,10 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { method } = req;
   switch (method) {
     case "GET":
@@ -13,9 +16,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const homepage = await axios.get(homepageUrl.toString());
 
-        const { hero, footerInfo, brainstorm } = homepage.data.data.attributes;
+        const { hero, brainstorm } = homepage.data.data.attributes;
 
-        res.status(200).json({ hero, footerInfo, brainstorm });
+        res.status(200).json({ hero, brainstorm });
       } catch (error) {
         res.status(500).json(error);
       }

@@ -114,15 +114,20 @@ export default function Home(props: Props) {
 
 export async function getServerSideProps() {
   try {
-    const [homepage, blogs, navigation] = await Promise.all([
+    const [homepage, blogs, navigation, footerInfo] = await Promise.all([
       axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/homepage"),
-      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/blogs"),
+      axios.get(
+        process.env.NEXT_PUBLIC_APP_BASEURL +
+          "/api/blogs?fields[0]=title&fields[1]=readDuration&populate=*&fields[2]=slug&fields[3]=category_id&fields[4]=image&pagination[page]=1&pagination[pageSize]=4"
+      ),
       axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation"),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer"),
     ]);
 
     return {
       props: {
         ...homepage.data,
+        footerInfo: footerInfo.data,
         navigation: navigation.data,
         blogs: blogs.data,
       },
