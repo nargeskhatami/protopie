@@ -61,31 +61,95 @@ interface Blog {
   id: number;
   attributes: Attributes;
 }
+[];
 
 interface Attributes {
   title: string;
   readDuration: number;
   slug: string;
   image: Image;
-  category_id: Categoryid;
+  category_id: CategoryId;
 }
 
-interface Categoryid {
-  data: Data;
+interface Image {
+  data?: Data;
 }
 
 interface Data {
   id: number;
-  attributes: Attributes;
+  attributes: ImageAttributes;
 }
 
-interface Attributes {
+interface ImageAttributes {
+  name: string;
+  alternativeText: any;
+  caption: any;
+  width: number;
+  height: number;
+  formats: Formats;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: any;
+  provider: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Formats {
+  small: Small;
+  medium: Medium;
+  thumbnail: Thumbnail;
+}
+
+interface Small {
+  ext: string;
+  url: string;
+  hash: string;
+  mime: string;
+  name: string;
+  path: any;
+  size: number;
+  width: number;
+  height: number;
+}
+
+interface Medium {
+  ext: string;
+  url: string;
+  hash: string;
+  mime: string;
+  name: string;
+  path: any;
+  size: number;
+  width: number;
+  height: number;
+}
+
+interface Thumbnail {
+  ext: string;
+  url: string;
+  hash: string;
+  mime: string;
+  name: string;
+  path: any;
+  size: number;
+  width: number;
+  height: number;
+}
+
+interface CategoryId {
+  data: {
+    id: number;
+    attributes: CategoryAttributes;
+  };
+}
+
+interface CategoryAttributes {
   category: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-}
-
-interface Image {
-  data?: string;
 }

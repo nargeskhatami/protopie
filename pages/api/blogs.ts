@@ -9,9 +9,12 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const blogsUrl = `${process.env.APP_API_BASEURL}/blogs?fields[0]=title&fields[1]=readDuration&populate=*&fields[2]=slug&fields[3]=category_id&fields[4]=image`;
+        const blogsUrl = new URL(`${process.env.APP_API_BASEURL}/blogs`);
 
-        const blogs = await axios.get(blogsUrl);
+        const params = new URLSearchParams(req.query as Record<string, string>);
+        blogsUrl.search = params.toString();
+
+        const blogs = await axios.get(blogsUrl.toString());
 
         const { data } = blogs.data;
 

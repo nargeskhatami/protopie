@@ -12,17 +12,15 @@ import styled from "styled-components";
 
 type Props = {
   footerInfo: FooterInfo;
-  hero: Hero;
   navigation: Menu[];
   blogs: Blog[];
-  brainstorm: Brainstorm;
 };
 const breadcrumbItems = [
   { label: "صفحه نخست", link: "/" },
   { label: "بلاگ", link: "/blog" },
 ];
 export default function Blog(props: Props) {
-  const { footerInfo, hero, navigation, brainstorm, blogs } = props;
+  const { footerInfo, navigation, blogs } = props;
   const isMobile = useIsMobile();
 
   return (
@@ -48,15 +46,18 @@ export default function Blog(props: Props) {
 
 export async function getServerSideProps() {
   try {
-    const [homepage, blogs, navigation] = await Promise.all([
-      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/homepage"),
-      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/blogs"),
+    const [navigation, blogs, footerInfo] = await Promise.all([
       axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation"),
+      axios.get(
+        process.env.NEXT_PUBLIC_APP_BASEURL +
+          "/api/blogs?fields[0]=title&fields[1]=readDuration&populate=*&fields[2]=slug&fields[3]=category_id&fields[4]=image&pagination[page]=1&pagination[pageSize]=4"
+      ),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer"),
     ]);
 
     return {
       props: {
-        ...homepage.data,
+        footerInfo: footerInfo.data,
         navigation: navigation.data,
         blogs: blogs.data,
       },

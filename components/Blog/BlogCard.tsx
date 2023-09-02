@@ -9,45 +9,54 @@ import {
   shorthands,
   tokens,
 } from "@fluentui/react-components";
-import { ArrowSmallLeftIcon } from "@heroicons/react/24/outline";
 import styled from "styled-components";
 import Col from "../Common/Grid/Col";
 import Flex from "../Common/Grid/Flex";
-
+import { ArrowSmallLeftIcon } from "@heroicons/react/24/outline";
 type Props = Blog & { size?: number };
 
 export default function BlogCard(props: Props) {
   const styles = useStyles();
   const { size = 12, attributes } = props;
-  const { category, title, readDuration, slug, image, category_id } =
-    attributes;
+  const { title, readDuration, slug, image, category_id } = attributes;
+
   return (
     <Col size={size}>
-      <Card appearance="subtle" className={styles.Card}>
-        <CardPreview className={styles.CardPreview}>
-          <img src={image.data} alt={title} className={styles.img} />
-        </CardPreview>
-        <CardHeader
-          className={styles.CardHeader}
-          header={
-            <Flex justify="between">
-              <Flex align="center" gap={8}>
-                <Link
-                  href={category_id.data.attributes.category}
-                  className={styles.categoryLink}
-                >
-                  <Caption1>{category_id.data.attributes.category}</Caption1>
-                </Link>
-                <Caption1
-                  className={styles.readDuration}
-                >{`${readDuration} دقیقه مطالعه`}</Caption1>
+      <Link
+        href={`/blog/${slug}`}
+        style={{ textDecoration: "none" }}
+        target="_blank"
+      >
+        <Card appearance="subtle" className={styles.Card}>
+          <CardPreview className={styles.CardPreview}>
+            <img
+              src={`https://admin.protopie.ir${image?.data?.attributes?.url}`}
+              alt={title}
+              className={styles.img}
+            />
+          </CardPreview>
+          <CardHeader
+            className={styles.CardHeader}
+            header={
+              <Flex justify="between">
+                <Flex align="center" gap={8} style={{ minWidth: "unset" }}>
+                  <Link
+                    href={category_id.data.attributes.category}
+                    className={styles.categoryLink}
+                  >
+                    <Caption1>{category_id.data.attributes.category}</Caption1>
+                  </Link>
+                  <Caption1
+                    className={styles.readDuration}
+                  >{`${readDuration} دقیقه مطالعه`}</Caption1>
+                </Flex>
+                <LinkIcon width={20} height={20} />
               </Flex>
-              <LinkIcon width={20} height={20} />
-            </Flex>
-          }
-          description={<Body1>{title}</Body1>}
-        />
-      </Card>
+            }
+            description={<Body1>{title}</Body1>}
+          />
+        </Card>{" "}
+      </Link>
     </Col>
   );
 }
@@ -90,7 +99,9 @@ const useStyles = makeStyles({
   },
 });
 
-const LinkIcon = styled(ArrowSmallLeftIcon)`
+const LinkIcon = styled(ArrowSmallLeftIcon)<{ width: number; height: number }>`
   transform: rotate(45deg);
+  width: ${(props) => props.width + "px"};
+  height: ${(props) => props.height + "px"};
   color: ${tokens.colorNeutralForeground4};
 `;
