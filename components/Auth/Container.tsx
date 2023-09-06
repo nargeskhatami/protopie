@@ -1,8 +1,4 @@
-import { useEffect, useState } from "react";
-
-import Button from "../Common/Button/Button";
-import ButtonBlock from "../Common/Button/ButtonBlock";
-
+import { loginShema } from "@/helpers/validations/auth";
 import {
   Dialog,
   DialogActions,
@@ -11,43 +7,39 @@ import {
   DialogSurface,
   DialogTitle,
   DialogTrigger,
-  InputProps,
   makeStyles,
 } from "@fluentui/react-components";
-import { FormProvider, useForm } from "react-hook-form";
-
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import styled from "styled-components";
+import Button from "../Common/Button/Button";
+import ButtonBlock from "../Common/Button/ButtonBlock";
 import ForgotPassword from "./ForgotPassword";
 import Login from "./Login";
 import Register from "./Register";
 
-type AuthComponent = "Register" | "Login" | "ForgotPassword";
-
 export default function AuthDialog() {
   const [title, setTitle] = useState("ورود");
   const [submitButtonText, setActionButtonText] = useState("ورود");
-  const [authComponent, setAuthComponent] = useState<AuthComponent>("Login");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const onChangeEmail: InputProps["onChange"] = (ev, data) => {
-    setEmail(data.value);
-  };
-  const onChangeUsername: InputProps["onChange"] = (ev, data) => {
-    setUsername(data.value);
-  };
-  const onChangePassword: InputProps["onChange"] = (ev, data) => {
-    setPassword(data.value);
-  };
-
   const customDialogStyles = useCustomDialogStyles();
 
-  const changeAuthComponent = (component: AuthComponent | null = null) => {
-    if (!component)
-      component = authComponent === "Login" ? "Register" : "Login";
+  const formMethods = useForm<LoginForm>({
+    resolver: yupResolver(loginShema),
+    mode: "onTouched",
+    defaultValues: {
+      component: "Login",
+      email: "",
+      password: "",
+      username: "",
+    },
+  });
+  const { watch, setValue } = formMethods;
 
+  const authComponent = watch("component");
+
+  const changeAuthComponent = (component: AuthComponent) => {
     switch (component) {
       case "Login":
         setTitle("ورود");
@@ -62,11 +54,15 @@ export default function AuthDialog() {
         setActionButtonText("ارسال لینک بازیابی");
         break;
     }
-
-    setAuthComponent(component);
+    formMethods.reset({
+      component,
+      email: "",
+      password: "",
+      username: "",
+    });
   };
 
-  const login = (identifier: string, password: string) => {
+  const login = (identifier: string, password?: string) => {
     axios
       .post("api/login", {
         identifier,
@@ -81,7 +77,7 @@ export default function AuthDialog() {
       });
   };
 
-  const register = (username: string, email: string, password: string) => {
+  const register = (email: string, username?: string, password?: string) => {
     axios
       .post("api/register", {
         username,
@@ -102,41 +98,17 @@ export default function AuthDialog() {
       email,
     });
   };
-  const submitForm = ({
-    email,
-    password,
-    username,
-  }: {
-    email: string;
-    password: string;
-    username: string;
-  }) => {
+
+  const submitForm = (args: LoginForm) => {
+    const { email, username, password } = args;
     if (authComponent === "Login") {
       login(email, password);
     } else if (authComponent === "Register") {
-      register(username, email, password);
+      register(email, username, password);
     } else {
       forgotPass(email);
     }
   };
-
-  const methods = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-      username: "",
-    },
-  });
-
-  const { handleSubmit, reset } = methods;
-
-  useEffect(() => {
-    reset({
-      email: "",
-      password: "",
-      username: "",
-    });
-  }, [authComponent]);
 
   return (
     <Dialog>
@@ -155,53 +127,40 @@ export default function AuthDialog() {
                 ? "لطفا ایمیل خود را وارد نمایید."
                 : "با یکی از دو روش زیر می‌توانید وارد شوید."}
             </SubHeader>
-            <FormProvider {...methods}>
+            <FormProvider {...formMethods}>
               <DialogContent className={customDialogStyles.content}>
-                {authComponent === "Login" && (
-                  <Login
-                    email={email}
-                    onChangeEmail={onChangeEmail}
-                    password={password}
-                    onChangePassword={onChangePassword}
-                  />
-                )}
-                {authComponent === "Register" && (
-                  <Register
-                    password={password}
-                    onChangePassword={onChangePassword}
-                    username={username}
-                    onChangeUsername={onChangeUsername}
-                    email={email}
-                    onChangeEmail={onChangeEmail}
-                  />
-                )}
-                {authComponent === "ForgotPassword" && (
-                  <ForgotPassword email={email} onChangeEmail={onChangeEmail} />
-                )}
+                {authComponent === "Login" && <Login />}
+                {authComponent === "Register" && <Register />}
+                {authComponent === "ForgotPassword" && <ForgotPassword />}
               </DialogContent>
               <DialogActions className={customDialogStyles.actions}>
-                {authComponent === "Login" && (
-                  <Button
-                    appearance="transparent"
-                    size="large"
-                    className={customDialogStyles.linkButton}
-                    onClick={() => changeAuthComponent("ForgotPassword")}
-                  >
-                    بازیابی رمز ورود
-                  </Button>
-                )}
+                <Button
+                  style={{
+                    display: authComponent === "Login" ? "block" : "none",
+                  }}
+                  appearance="transparent"
+                  size="large"
+                  className={customDialogStyles.linkButton}
+                  onClick={() => changeAuthComponent("ForgotPassword")}
+                >
+                  بازیابی رمز ورود
+                </Button>
                 <ButtonBlock
                   appearance="primary"
                   size="large"
                   type="submit"
-                  onClick={handleSubmit(submitForm)}
+                  onClick={formMethods.handleSubmit(submitForm)}
                 >
                   {submitButtonText}
                 </ButtonBlock>
                 <ButtonBlock
                   appearance="transparent"
                   size="large"
-                  onClick={() => changeAuthComponent(null)}
+                  onClick={() =>
+                    changeAuthComponent(
+                      authComponent === "Login" ? "Register" : "Login"
+                    )
+                  }
                 >
                   {authComponent === "Login" ? "ثبت نام" : "بازگشت"}
                 </ButtonBlock>

@@ -1,21 +1,12 @@
-import { Button, InputOnChangeData, InputProps, makeStyles } from "@fluentui/react-components";
-import { ChangeEvent, useState } from "react";
+import { Button, makeStyles } from "@fluentui/react-components";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import styled from "styled-components";
 import ButtonBlock from "../Common/Button/ButtonBlock";
 import InputLarge from "../Common/Input/InputLarge";
-import styled from "styled-components";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { Controller, useFormContext } from "react-hook-form";
 
-type Props = {
-  email: string;
-  onChangeEmail: (ev: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void
-  password: string;
-  onChangePassword: (ev: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void;
-};
-
-export default function Login(props: Props) {
-  const { email, onChangeEmail, password, onChangePassword } = props;
-
+export default function Login() {
   const styles = useStyles();
 
   const [showPass, setShowPass] = useState(false);
@@ -39,7 +30,7 @@ export default function Login(props: Props) {
   const {
     control,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<LoginForm>();
 
   return (
     <Wrapper>
@@ -58,14 +49,11 @@ export default function Login(props: Props) {
 
       <Controller
         name="email"
-        rules={{ required: "ایمیل اجباری است" }}
         control={control}
         render={({ field }) => (
           <InputLarge
             {...field}
             label="ایمیل"
-            onChange={onChangeEmail}
-            value={email}
             error={errors.email?.message as string}
             id="input-email"
           />
@@ -73,14 +61,11 @@ export default function Login(props: Props) {
       />
       <Controller
         name="password"
-        rules={{ required: "رمز ورود اجباری است" }}
         control={control}
         render={({ field }) => (
           <InputLarge
             {...field}
             label="رمز ورود"
-            onChange={onChangePassword}
-            value={password}
             type={showPass ? "text" : "password"}
             id="input-password"
             error={errors.password?.message as string}
