@@ -6,7 +6,7 @@ type Props = {
   column?: boolean;
   direction?: "ltr" | "rtl";
   align?: "center" | "start" | "end" | "baseline";
-  justify?: "center" | "between" | "around" | "evenly";
+  justify?: "center" | "between" | "around" | "evenly" | "start" | "end";
   gap?: number | string;
   className?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
@@ -33,5 +33,9 @@ const FlexDiv = styled.div<Props>`
   flex-direction: ${(props) => (props.column ? "column" : "row")};
   direction: ${(props) => props.direction};
   gap: ${(props) =>
-    props.gap ? (typeof props.gap === "string" ? props.gap : `${props.gap}px`) : "0"};
+    props.gap
+      ? typeof props.gap === "string"
+        ? props.gap
+        : `${props.gap}px`
+      : "0"};
 `;

@@ -3,17 +3,20 @@ import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import styled from "styled-components";
 
+type JustifyT = "center" | "between" | "around" | "evenly" | "start" | "end";
 type Props = {
+  justify?: JustifyT;
   items: {
     label: string;
     link?: string;
   }[];
 };
+
 export default function Breadcrumb(props: Props) {
-  const { items } = props;
+  const { items, justify = "center" } = props;
   return (
     <nav aria-label="breadcrumb">
-      <BreadcrumbList>
+      <BreadcrumbList justify={justify}>
         {items.map((item, index) => (
           <>
             <BreadcrumbListItem key={`breadcrumb-${index}`}>
@@ -33,13 +36,22 @@ export default function Breadcrumb(props: Props) {
   );
 }
 
-const BreadcrumbList = styled.ol`
+const BreadcrumbList = styled.ol<{
+  justify: JustifyT;
+}>`
   list-style: none;
   margin: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.2rem;
+  justify-content: ${(props) =>
+    props.justify
+      ? ["between", "around", "evenly"].includes(props.justify)
+        ? `space-${props.justify}`
+        : ["start", "end"].includes(props.justify)
+        ? `flex-${props.justify}`
+        : props.justify
+      : "initial"};
 `;
 
 const BreadcrumbListItem = styled.li`
