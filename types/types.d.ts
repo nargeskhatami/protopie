@@ -1,3 +1,5 @@
+// ------------- Menu -------------
+
 interface Menu {
   id: number;
   title: string;
@@ -7,12 +9,14 @@ interface Menu {
   items: Menu[];
 }
 
+// ------------- Home -------------
+
 interface Hero {
-  images: Image[];
-  mainLink: Image;
+  images: LinkItem[];
+  mainLink: LinkItem;
   subTitle: SubTitle;
   mainTitle: MainTitle;
-  secondLink: Image;
+  secondLink: LinkItem;
   description: string;
 }
 
@@ -27,10 +31,17 @@ interface SubTitle {
   secondPart: string;
 }
 
-interface Image {
+interface LinkItem {
   url: string;
   text: string;
 }
+
+interface Brainstorm {
+  title: string;
+  subTitle: string;
+}
+
+// ------------- Footer -------------
 
 interface FooterInfo {
   links: Link[];
@@ -47,15 +58,7 @@ interface Link {
   subMenus: SubMenu[];
 }
 
-interface SubMenu {
-  path: string;
-  title: string;
-}
-
-interface Brainstorm {
-  title: string;
-  subTitle: string;
-}
+// ------------- Blog -------------
 
 interface Blog {
   id: number;
@@ -69,6 +72,8 @@ interface Attributes {
   slug: string;
   image: Image;
   category_id: CategoryId;
+  createdAt: string;
+  text?: string;
 }
 
 interface Image {
@@ -152,4 +157,49 @@ interface CategoryAttributes {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+}
+
+// ------------- Documentation -------------
+
+interface DocumentationMenu {
+  id: number;
+  attributes: DocumentationMenuAttributes;
+}
+
+interface DocumentationMenuAttributes {
+  title: string;
+  subMenu?: SubMenu[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  active: boolean;
+}
+
+interface SubMenu {
+  slug: string;
+  title: string;
+}
+
+interface Documentation {
+  id: number;
+  attributes: DocumentationAttributes;
+}
+
+interface DocumentationAttributes {
+  slug: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+// ------------- Login -------------
+
+type AuthComponent = "Register" | "Login" | "ForgotPassword";
+
+interface LoginForm {
+  component: AuthComponent;
+  email: string;
+  password?: string;
+  username?: string;
 }

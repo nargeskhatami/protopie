@@ -15,10 +15,10 @@ export default async function handler(
         blogsUrl.search = params.toString();
 
         const blogs = await axios.get(blogsUrl.toString());
-
+        const isSingle = req.query["filters[slug][$eq]"];
         const { data } = blogs.data;
 
-        res.status(200).json(data);
+        res.status(200).json(isSingle ? data[0] : data);
       } catch (error) {
         res.status(500).json(error);
       }
