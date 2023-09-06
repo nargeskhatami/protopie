@@ -1,5 +1,6 @@
 import {
   Body1,
+  Button,
   Caption1,
   Card,
   CardHeader,
@@ -29,23 +30,30 @@ export default function BlogCard(props: Props) {
       >
         <Card appearance="subtle" className={styles.Card}>
           <CardPreview className={styles.CardPreview}>
-            <img
-              src={`https://admin.protopie.ir${image?.data?.attributes?.url}`}
-              alt={title}
-              className={styles.img}
-            />
+            {image?.data?.attributes?.url && (
+              <img
+                src={`https://admin.protopie.ir${image.data.attributes.url}`}
+                alt={title}
+                className={styles.img}
+              />
+            )}
           </CardPreview>
           <CardHeader
             className={styles.CardHeader}
             header={
               <Flex justify="between">
                 <Flex align="center" gap={8} style={{ minWidth: "unset" }}>
-                  <Link
-                    href={category_id.data.attributes.category}
+                  <Button
+                    appearance="transparent"
                     className={styles.categoryLink}
+                    onClick={() =>
+                      window
+                        .open(category_id.data.attributes.category, "_blank")
+                        ?.focus()
+                    }
                   >
                     <Caption1>{category_id.data.attributes.category}</Caption1>
-                  </Link>
+                  </Button>
                   <Caption1
                     className={styles.readDuration}
                   >{`${readDuration} دقیقه مطالعه`}</Caption1>
@@ -55,7 +63,7 @@ export default function BlogCard(props: Props) {
             }
             description={<Body1>{title}</Body1>}
           />
-        </Card>{" "}
+        </Card>
       </Link>
     </Col>
   );
@@ -80,6 +88,10 @@ const useStyles = makeStyles({
     height: "28px",
     display: "flex",
     alignItems: "center",
+    width: "fit-content",
+    minWidth: "fit-content",
+    color: tokens.colorNeutralForeground2,
+    ...shorthands.padding(0),
   },
   readDuration: {
     color: tokens.colorNeutralForeground4,
