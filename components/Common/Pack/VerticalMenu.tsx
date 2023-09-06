@@ -22,7 +22,7 @@ export default function VerticalMenu(props: Props) {
             key={`menu-${menuIndex}-item-${index}`}
             className={styles.menuItem}
           >
-            <MenuLink href={item.path}>{item.title}</MenuLink>
+            <MenuLink href={item.slug}>{item.title}</MenuLink>
           </Body1>
         ))}
       </Menu>

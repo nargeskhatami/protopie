@@ -13,7 +13,20 @@ export default async function handler(
           `${process.env.APP_API_BASEURL}/footerinfo`
         );
 
-        const { links, SocialMedias } = footerInfo.data.data.attributes.data;
+        let { links, SocialMedias } = footerInfo.data.data.attributes.data;
+
+        links = links.map(
+          (link: {
+            title: string;
+            subMenus: { title: string; path: string }[];
+          }) => ({
+            title: link.title,
+            subMenus: link.subMenus.map((menu) => ({
+              title: menu.title,
+              slug: menu.path,
+            })),
+          })
+        );
 
         res.status(200).json({ links, SocialMedias });
       } catch (error) {
