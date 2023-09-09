@@ -1,6 +1,5 @@
-import { useQuery } from "react-query";
 import axios from "axios";
-import { useEffect } from "react";
+import { useQuery } from "react-query";
 
 const fetchDocumentation = async (slug: string) => {
   return await axios.get(
