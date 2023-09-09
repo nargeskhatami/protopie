@@ -1,4 +1,3 @@
----
 name: remote ssh command
 on: [push]
 jobs:
@@ -10,9 +9,8 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: '${{ secrets.HOST }}'
-        username: '${{ secrets.USERNAME }}'
-        password: '${{ secrets.PASSWORD }}'
-        port: '${{ secrets.PORT }}'
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
         script: 'sh test.sh'
-...
