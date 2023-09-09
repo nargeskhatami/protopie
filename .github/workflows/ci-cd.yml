@@ -13,6 +13,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script: |
-          nvm use 18
-          'sh test.sh'
+        script: 'sh test.sh'
