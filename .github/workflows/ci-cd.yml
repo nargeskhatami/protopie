@@ -10,7 +10,7 @@ jobs:
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: kaskas123
+        username: root
+        password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: 'sh test.sh'
