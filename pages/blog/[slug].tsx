@@ -104,7 +104,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       axios.get(
         `${process.env.NEXT_PUBLIC_APP_BASEURL}/api/blogs?filters[slug][$eq]=${slug}&populate=*`
       ),
-      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer"),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer-info"),
     ]);
 
     return {

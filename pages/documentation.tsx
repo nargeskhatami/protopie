@@ -113,7 +113,7 @@ export async function getServerSideProps() {
       axios.get(
         process.env.NEXT_PUBLIC_APP_BASEURL + "/api/documentation/menu"
       ),
-      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer"),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer-info"),
     ]);
 
     return {

@@ -121,7 +121,7 @@ export async function getServerSideProps() {
           "/api/blogs?fields[0]=title&fields[1]=readDuration&populate=*&fields[2]=slug&fields[3]=category_id&fields[4]=image&pagination[page]=1&pagination[pageSize]=4"
       ),
       axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation"),
-      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer"),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer-info"),
     ]);
 
     return {
