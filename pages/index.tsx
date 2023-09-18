@@ -120,41 +120,19 @@ export async function getServerSideProps() {
         process.env.NEXT_PUBLIC_APP_BASEURL +
           "/api/blogs?fields[0]=title&fields[1]=readDuration&populate=*&fields[2]=slug&fields[3]=category_id&fields[4]=image&pagination[page]=1&pagination[pageSize]=4"
       ),
-      axios.get(`${process.env.APP_API_BASEURL}/navigation/render/1?type=TREE`),
-      axios.get(`${process.env.APP_API_BASEURL}/footerinfo`),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation"),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer"),
     ]);
-    let { links, SocialMedias } = footerInfo.data.data.attributes.data;
 
-    links = links.map(
-      (link: {
-        title: string;
-        subMenus: { title: string; path: string }[];
-      }) => ({
-        title: link.title,
-        subMenus: link.subMenus.map((menu) => ({
-          title: menu.title,
-          slug: menu.path,
-        })),
-      })
-    );
     return {
       props: {
         ...homepage.data,
-        footerInfo: { links, SocialMedias },
-        navigation: navigation.data.map((item: Menu) => ({
-          id: item.id,
-          title: item.title,
-          path: item.path,
-          items: item.items,
-        })),
+        footerInfo: footerInfo.data,
+        navigation: navigation.data,
         blogs: blogs.data,
       },
     };
   } catch (error) {
-    console.log(
-      "🚀 ~ file: index.tsx:136 ~ getServerSideProps ~ error:",
-      error
-    );
     return;
   }
 }
