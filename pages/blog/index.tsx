@@ -33,9 +33,13 @@ export default function Blog(props: Props) {
         <Heading title="بلاگ" />
         <Breadcrumb items={breadcrumbItems} />
         <Space isMobile={isMobile} />
-        <Flex>
+        <Flex column={isMobile}>
           {blogs.map((blog, index) => (
-            <BlogCard key={`blog-${index}`} {...blog} size={3} />
+            <BlogCard
+              key={`blog-${index}`}
+              {...blog}
+              size={isMobile ? 12 : 3}
+            />
           ))}
         </Flex>
         <Space isMobile={isMobile} />
