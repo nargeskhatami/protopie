@@ -2,9 +2,17 @@ import Auth from "@/components/Auth/Container";
 import Container from "@/components/Common/Container";
 import useIsMobile from "@/hooks/useIsMobile";
 import { tokens } from "@fluentui/react-theme";
-import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import styled from "styled-components";
+import InputLarge from "../Common/Input/InputLarge";
+import { Body1, Button, Divider, Input } from "@fluentui/react-components";
+import { useState } from "react";
+import Flex from "../Common/Grid/Flex";
 
 type Props = {
   navigation: Menu[];
@@ -13,11 +21,66 @@ type Props = {
 export default function Navbar(props: Props) {
   const { navigation } = props;
   const isMobile = useIsMobile();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <Wrapper>
       <StyledContainer isMobile={isMobile}>
         {isMobile ? (
-          <Bars3Icon width={24} height={24} />
+          <>
+            <Button
+              style={{ minWidth: "fit-content" }}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              appearance="transparent"
+              size="small"
+            >
+              {isMenuOpen ? (
+                <XMarkIcon width={24} height={24} />
+              ) : (
+                <Bars3Icon width={24} height={24} />
+              )}
+            </Button>
+
+            <MobileMenuWrapper isMenuOpen={isMenuOpen}>
+              <MobileNavbarList>
+                <MobileMenu column gap={tokens.spacingVerticalXL}>
+                  <Input
+                    style={{
+                      width: "100%",
+                    }}
+                    placeholder="جستجو"
+                    size="large"
+                    id="search"
+                    contentAfter={
+                      <MagnifyingGlassIcon width={20} height={20} />
+                    }
+                  />
+                  {navigation.map((item) => {
+                    return (
+                      <li
+                        key={item.id}
+                        style={{
+                          width: "100%",
+                        }}
+                      >
+                        <Link
+                          href={item.path}
+                          style={{
+                            display: "block",
+                            marginBottom: tokens.spacingVerticalM,
+                          }}
+                        >
+                          <Body1>{item.title}</Body1>
+                        </Link>
+                        <Divider />
+                      </li>
+                    );
+                  })}
+                </MobileMenu>
+                <Auth />
+              </MobileNavbarList>
+            </MobileMenuWrapper>
+          </>
         ) : (
           <NavbarList>
             <Auth />
@@ -43,6 +106,21 @@ const Wrapper = styled.div`
   padding: ${tokens.spacingVerticalM} 0;
 `;
 
+const MobileMenuWrapper = styled.div<{ isMenuOpen: boolean }>`
+  position: absolute;
+  height: calc(100% - 56px);
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background: ${tokens.colorNeutralBackground3};
+  z-index: 1000;
+  transition: all 0.2s;
+  visibility: ${({ isMenuOpen }) => (isMenuOpen ? "visible" : "hidden")};
+  opacity: ${({ isMenuOpen }) => (isMenuOpen ? "1" : "0")};
+`;
+
+const MobileMenu = styled(Flex)``;
+
 const NavbarList = styled.ul`
   display: flex;
   align-items: center;
@@ -50,9 +128,21 @@ const NavbarList = styled.ul`
   gap: ${tokens.spacingHorizontalXXL};
 `;
 
+const MobileNavbarList = styled.ul`
+  display: flex;
+  align-items: center;
+  list-style: none;
+  flex-direction: column;
+  height: calc(100% - 56px);
+  justify-content: space-between;
+  gap: ${tokens.spacingHorizontalXXL};
+  padding: ${tokens.spacingHorizontalXXL};
+`;
+
 const StyledContainer = styled(Container)<{ isMobile?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: ${({ isMobile }) => (isMobile ? `0 ${tokens.spacingHorizontalXL}` : `0`)};
+  padding: ${({ isMobile }) =>
+    isMobile ? `0 ${tokens.spacingHorizontalXL}` : `0`};
 `;

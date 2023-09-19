@@ -1,4 +1,10 @@
-import { Input, InputProps, Label, makeStyles, shorthands } from "@fluentui/react-components";
+import {
+  Input,
+  InputProps,
+  Label,
+  makeStyles,
+  shorthands,
+} from "@fluentui/react-components";
 import styled from "styled-components";
 
 type Props = InputProps & { label?: string; error: string };

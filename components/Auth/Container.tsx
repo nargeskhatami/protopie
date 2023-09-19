@@ -19,11 +19,13 @@ import ButtonBlock from "../Common/Button/ButtonBlock";
 import ForgotPassword from "./ForgotPassword";
 import Login from "./Login";
 import Register from "./Register";
+import useIsMobile from "@/hooks/useIsMobile";
 
 export default function AuthDialog() {
   const [title, setTitle] = useState("ورود");
   const [submitButtonText, setActionButtonText] = useState("ورود");
   const customDialogStyles = useCustomDialogStyles();
+  const isMobile = useIsMobile();
 
   const formMethods = useForm<LoginForm>({
     resolver: yupResolver(loginShema),
@@ -113,7 +115,13 @@ export default function AuthDialog() {
   return (
     <Dialog>
       <DialogTrigger disableButtonEnhancement>
-        <Button size="large">ورود و ثبت نام</Button>
+        {isMobile ? (
+          <ButtonBlock appearance="primary" size="large" type="submit">
+            ورود و ثبت نام
+          </ButtonBlock>
+        ) : (
+          <Button size="large">ورود و ثبت نام</Button>
+        )}
       </DialogTrigger>
       <DialogSurface className={customDialogStyles.surface}>
         <DialogContentWrapper>
