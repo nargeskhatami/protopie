@@ -13,6 +13,8 @@ import { PagesProgressBar as ProgressBar } from "next-nprogress-bar";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { GoogleAnalytics } from "nextjs-google-analytics";
+import { useEffect } from "react";
+import { clarity } from "react-microsoft-clarity";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 export const protopieTheme: Theme = {
@@ -29,6 +31,11 @@ export default function App({
   pageProps,
   renderer,
 }: EnhancedAppProps) {
+  useEffect(
+    () => clarity.init(process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_ID as string),
+    []
+  );
+
   return (
     <>
       <Head>
