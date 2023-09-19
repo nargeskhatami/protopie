@@ -1,19 +1,19 @@
+import theme from "@/config/theme.json";
 import "@/styles/globals.css";
 import {
   FluentProvider,
-  webDarkTheme,
+  GriffelRenderer,
+  RendererProvider,
+  SSRProvider,
   Theme,
   createDOMRenderer,
-  GriffelRenderer,
-  SSRProvider,
-  RendererProvider,
-  webLightTheme,
+  webDarkTheme,
 } from "@fluentui/react-components";
-import theme from "@/config/theme.json";
-import Head from "next/head";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { PagesProgressBar as ProgressBar } from "next-nprogress-bar";
 import type { AppProps } from "next/app";
+import Head from "next/head";
+import { GoogleAnalytics } from "nextjs-google-analytics";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 export const protopieTheme: Theme = {
   ...webDarkTheme,
@@ -38,6 +38,7 @@ export default function App({
         <SSRProvider>
           <FluentProvider dir="rtl" theme={protopieTheme}>
             <QueryClientProvider client={queryClient}>
+              <GoogleAnalytics trackPageViews />
               <Component {...pageProps} />
               <ProgressBar
                 height="4px"
