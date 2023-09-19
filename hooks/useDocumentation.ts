@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 
 const fetchDocumentation = async (slug: string) => {
   return await axios.get(
-    `${process.env.NEXT_PUBLIC_APP_BASEURL}/api/documentation?filters[slug][$eq]=${slug}`
+    `${process.env.NEXT_PUBLIC_APP_API_BASEURL}/documentations-blogs?filters[slug][$eq]=${slug}`
   );
 };
 
@@ -12,7 +12,7 @@ const useDocumentation = (slug: string) => {
     ["documentation", slug],
     async () => {
       const res = await fetchDocumentation(slug);
-      return res.data;
+      return res.data.data;
     },
     {
       refetchOnWindowFocus: false,

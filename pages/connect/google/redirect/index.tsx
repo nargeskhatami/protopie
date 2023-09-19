@@ -61,7 +61,7 @@ export async function getServerSideProps() {
   try {
     const [navigation, footerInfo] = await Promise.all([
       axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/navigation"),
-      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer-info"),
+      axios.get(process.env.NEXT_PUBLIC_APP_BASEURL + "/api/footer"),
     ]);
 
     return {

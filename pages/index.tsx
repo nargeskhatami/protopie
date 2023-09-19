@@ -133,6 +133,10 @@ export async function getServerSideProps() {
       },
     };
   } catch (error) {
+    console.log(
+      "🚀 ~ file: index.tsx:136 ~ getServerSideProps ~ error:",
+      error
+    );
     return;
   }
 }
