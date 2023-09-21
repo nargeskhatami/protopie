@@ -1,4 +1,9 @@
-import { Button, ButtonProps, makeStyles, tokens } from "@fluentui/react-components";
+import {
+  Button,
+  ButtonProps,
+  makeStyles,
+  tokens,
+} from "@fluentui/react-components";
 
 export default function ButtonFullWidth(props: ButtonProps) {
   const styles = useStyles();
@@ -15,6 +20,7 @@ const useStyles = makeStyles({
     fontSize: tokens.fontSizeBase300,
     width: "100%",
     height: "56px",
+    display: "flex",
     "> span": {
       marginLeft: tokens.spacingHorizontalM,
       marginRight: tokens.spacingHorizontalM,
