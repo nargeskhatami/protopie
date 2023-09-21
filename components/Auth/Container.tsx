@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogSurface,
   DialogTitle,
+  shorthands,
   DialogTrigger,
   makeStyles,
 } from "@fluentui/react-components";
@@ -20,6 +21,7 @@ import ForgotPassword from "./ForgotPassword";
 import Login from "./Login";
 import Register from "./Register";
 import useIsMobile from "@/hooks/useIsMobile";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function AuthDialog() {
   const [title, setTitle] = useState("ورود");
@@ -123,9 +125,15 @@ export default function AuthDialog() {
           <Button size="large">ورود و ثبت نام</Button>
         )}
       </DialogTrigger>
-      <DialogSurface className={customDialogStyles.surface}>
-        <DialogContentWrapper>
-          <SampleImg></SampleImg>
+      <DialogSurface
+        className={
+          isMobile
+            ? customDialogStyles.surfaceMobile
+            : customDialogStyles.surface
+        }
+      >
+        <DialogContentWrapper isMobile={isMobile}>
+          {!isMobile && <SampleImg></SampleImg>}
           <DialogBody className={customDialogStyles.body}>
             <DialogTitle className={customDialogStyles.title}>
               {title}
@@ -135,6 +143,17 @@ export default function AuthDialog() {
                 ? "لطفا ایمیل خود را وارد نمایید."
                 : "با یکی از دو روش زیر می‌توانید وارد شوید."}
             </SubHeader>
+            {isMobile && (
+              <DialogTrigger disableButtonEnhancement>
+                <Button
+                  appearance="transparent"
+                  size="small"
+                  className={customDialogStyles.closeBtn}
+                >
+                  <XMarkIcon width={24} height={24} />
+                </Button>
+              </DialogTrigger>
+            )}
             <FormProvider {...formMethods}>
               <DialogContent className={customDialogStyles.content}>
                 {authComponent === "Login" && <Login />}
@@ -186,6 +205,11 @@ const useCustomDialogStyles = makeStyles({
     width: "960px",
     maxWidth: "960px",
   },
+  surfaceMobile: {
+    width: "960px",
+    maxWidth: "960px",
+    height: "100vh",
+  },
   title: {
     textAlign: "center",
     fontWeight: "var(--fontWeightBold)",
@@ -198,6 +222,13 @@ const useCustomDialogStyles = makeStyles({
   },
   body: {
     display: "block",
+    position: "relative",
+  },
+  closeBtn: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    minWidth: "fit-content",
   },
   actions: {
     flexDirection: "column",
@@ -212,13 +243,13 @@ const useCustomDialogStyles = makeStyles({
   },
 });
 
-const DialogContentWrapper = styled.div`
+const DialogContentWrapper = styled.div<{ isMobile: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   & > div {
-    flex: 0 0 calc(50% - 24px);
+    flex: 0 0 ${(props) => (props.isMobile ? "100%" : "calc(50% - 24px)")};
   }
 `;
 const SubHeader = styled.span`
