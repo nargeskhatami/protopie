@@ -74,6 +74,10 @@ interface Attributes {
   category_id: CategoryId;
   createdAt: string;
   text?: string;
+  anchors: {
+    link: string;
+    name: string;
+  }[];
 }
 
 interface Image {

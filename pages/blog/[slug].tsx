@@ -12,6 +12,7 @@ import {
   Body2,
   Caption1,
   Divider,
+  Link,
   Title3,
   makeStyles,
   shorthands,
@@ -19,6 +20,7 @@ import {
 import axios from "axios";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
+import { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -28,10 +30,20 @@ type Props = {
 };
 export default function Blog(props: Props) {
   const { footerInfo, navigation, blog } = props;
-  const { title, slug, image, category_id, readDuration, createdAt, text } =
-    blog.attributes;
+  const {
+    title,
+    slug,
+    image,
+    category_id,
+    readDuration,
+    createdAt,
+    text,
+    anchors,
+  } = blog.attributes;
+
   const isMobile = useIsMobile();
   const styles = useStyles();
+  const [selectedAnchor, setSelectedAnchor] = useState("");
 
   const breadcrumbItems = [
     { label: "صفحه نخست", link: "/" },
@@ -55,7 +67,7 @@ export default function Blog(props: Props) {
                   <Flex gap={24}>
                     {image?.data?.attributes?.formats?.thumbnail && (
                       <img
-                        src={`https://admin.protopie.ir${image.data.attributes.formats.thumbnail.url}`}
+                        src={`${process.env.NEXT_PUBLIC_ADMIN_URL}${image.data.attributes.formats.thumbnail.url}`}
                         alt={title}
                         width={150}
                         height={150}
@@ -85,6 +97,27 @@ export default function Blog(props: Props) {
                 <Body2 color={tokens.colorNeutralForeground3}>
                   فهرست محتوا
                 </Body2>
+                {anchors && (
+                  <AnchorsList>
+                    {anchors.map((anchor) => (
+                      <AnchorListItem
+                        className={
+                          selectedAnchor === anchor.link ? "active" : ""
+                        }
+                      >
+                        <Body1 style={{ display: "block" }}>
+                          <Link
+                            href={`#${anchor.link}`}
+                            appearance="subtle"
+                            onClick={() => setSelectedAnchor(anchor.link)}
+                          >
+                            {anchor.name}
+                          </Link>
+                        </Body1>
+                      </AnchorListItem>
+                    ))}
+                  </AnchorsList>
+                )}
               </Wrapper>
             </Col>
           </Flex>
@@ -126,6 +159,39 @@ const Pre = styled.pre`
   padding: ${tokens.spacingVerticalXXL} 0;
 `;
 
+const AnchorsList = styled.ul`
+  list-style-type: none;
+  padding: ${tokens.spacingVerticalSNudge} 0;
+  margin: 0;
+`;
+
+const AnchorListItem = styled.ul`
+  list-style-type: none;
+  padding: ${tokens.spacingVerticalSNudge} 0;
+  position: relative;
+  & a {
+    display: block;
+    :hover {
+      text-decoration-line: none;
+    }
+  }
+  &.active {
+    & a {
+      color: ${tokens.colorPaletteRedBackground1};
+    }
+    :before {
+      content: "";
+      display: block;
+      height: 32px;
+      width: 2px;
+      background: ${tokens.colorPaletteRedBackground1};
+      position: absolute;
+      left: calc(100% + ${tokens.spacingVerticalXXL} - 2px);
+      top: 0;
+    }
+  }
+`;
+
 const Space = styled.div<{ isMobile: boolean }>`
   height: ${(props) => (props.isMobile ? "20px" : "200px")};
   background-image: ${(props) =>
@@ -133,6 +199,7 @@ const Space = styled.div<{ isMobile: boolean }>`
   margin: ${tokens.spacingVerticalXXXL} 0;
 }
 `;
+
 const Wrapper = styled.div`
   border-radius: ${tokens.borderRadiusMedium};
   background: ${tokens.colorNeutralBackground2};

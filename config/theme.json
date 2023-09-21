@@ -224,7 +224,7 @@
   "colorNeutralShadowKeyDarker": "rgba(0,0,0,0.48)",
   "colorBrandShadowAmbient": "rgba(0,0,0,0.30)",
   "colorBrandShadowKey": "rgba(0,0,0,0.25)",
-  "colorPaletteRedBackground1": "#3f1011",
+  "colorPaletteRedBackground1": "#FF8982",
   "colorPaletteRedBackground2": "#751d1f",
   "colorPaletteRedBackground3": "#d13438",
   "colorPaletteRedForeground1": "#e37d80",
