@@ -1,4 +1,4 @@
-import BlogCard from "@/components/Blog/BlogCard";
+import BlogContent from "@/components/Blog/BlogContent";
 import Breadcrumb from "@/components/Common/Breadcrumb/Breadcrumb";
 import Container from "@/components/Common/Container";
 import Col from "@/components/Common/Grid/Col";
@@ -89,7 +89,7 @@ export default function Blog(props: Props) {
                   </Flex>
                 </Flex>
                 <Divider className={styles.customLineColor} />
-                <Pre>{text}</Pre>
+                <BlogContent content={text} />
               </Wrapper>
             </Col>
             <Col size={3}>

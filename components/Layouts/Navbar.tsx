@@ -1,6 +1,13 @@
 import Auth from "@/components/Auth/Container";
 import Container from "@/components/Common/Container";
 import useIsMobile from "@/hooks/useIsMobile";
+import {
+  Body1,
+  Body2,
+  Button,
+  Divider,
+  Input,
+} from "@fluentui/react-components";
 import { tokens } from "@fluentui/react-theme";
 import {
   Bars3Icon,
@@ -8,10 +15,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import styled from "styled-components";
-import InputLarge from "../Common/Input/InputLarge";
-import { Body1, Button, Divider, Input } from "@fluentui/react-components";
 import { useState } from "react";
+import styled from "styled-components";
 import Flex from "../Common/Grid/Flex";
 
 type Props = {
@@ -94,9 +99,12 @@ export default function Navbar(props: Props) {
             <MagnifyingGlassIcon width={20} height={20} />
           </NavbarList>
         )}
-        <svg width={234} height={30}>
-          <use href={`/sprite.svg#logo`} />
-        </svg>
+        <Flex align="center" gap={12} style={{ minWidth: "unset" }}>
+          <Body2 style={{ color: tokens.colorBrandBackground }}>Beta</Body2>
+          <svg width={234} height={30}>
+            <use href={`/sprite.svg#logo`} />
+          </svg>
+        </Flex>
       </StyledContainer>
     </Wrapper>
   );
