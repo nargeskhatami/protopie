@@ -60,9 +60,16 @@ export default function Home(props: Props) {
               src={brainstormMobilePic}
               alt="Brainstorm"
               style={{ padding: "1rem" }}
+              loading="lazy"
+              placeholder="blur"
             />
           ) : (
-            <Image src={brainstormPic} alt="Brainstorm" />
+            <Image
+              src={brainstormPic}
+              alt="Brainstorm"
+              loading="lazy"
+              placeholder="blur"
+            />
           )}
         </Brainstorm>
         <Flex column align="center" justify="center">
@@ -133,10 +140,6 @@ export async function getServerSideProps() {
       },
     };
   } catch (error) {
-    console.log(
-      "🚀 ~ file: index.tsx:136 ~ getServerSideProps ~ error:",
-      error
-    );
     return;
   }
 }

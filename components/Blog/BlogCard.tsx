@@ -14,6 +14,7 @@ import styled from "styled-components";
 import Col from "../Common/Grid/Col";
 import Flex from "../Common/Grid/Flex";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 type Props = Blog & { size?: number };
 
 export default function BlogCard(props: Props) {
@@ -31,10 +32,12 @@ export default function BlogCard(props: Props) {
         <Card appearance="subtle" className={styles.Card}>
           <CardPreview className={styles.CardPreview}>
             {image?.data?.attributes?.url && (
-              <img
+              <Image
                 src={`https://admin.protopie.ir${image.data.attributes.url}`}
                 alt={title}
                 className={styles.img}
+                fill
+                loading="lazy"
               />
             )}
           </CardPreview>
@@ -77,9 +80,12 @@ const useStyles = makeStyles({
   CardPreview: {
     marginLeft: "0 !important",
     marginRight: "0 !important",
+    position: "relative",
+    width: "100%",
+    aspectRatio: "16/9",
   },
   img: {
-    ...shorthands.borderRadius(tokens.spacingVerticalS),
+    ...shorthands.borderRadius(tokens.borderRadiusXLarge),
   },
   CardHeader: {
     rowGap: tokens.spacingVerticalS,
