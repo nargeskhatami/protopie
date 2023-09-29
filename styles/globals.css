@@ -9,6 +9,7 @@
 
 :root {
   --swiper-pagination-bottom: -50px;
+  --background-image-lazy: url("/images/dust.png");
 }
 
 * {
@@ -25,7 +26,7 @@ body {
 }
 
 .fui-FluentProvider {
-  background-image: url("../public/images/dust.png");
+  background-image: var(--background-image-lazy);
   background-position: 0 0;
   background-repeat: no-repeat;
   background-size: initial;
