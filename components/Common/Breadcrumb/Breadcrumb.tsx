@@ -57,6 +57,12 @@ const BreadcrumbList = styled.ol<{
 const BreadcrumbListItem = styled.li`
   display: inline;
   font-size: 12px;
+  white-space: nowrap;
+  &:last-child {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const BreadcrumbLink = styled(Link)`

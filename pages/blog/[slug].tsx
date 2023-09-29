@@ -1,26 +1,26 @@
 import BlogContent from "@/components/Blog/BlogContent";
-import Breadcrumb from "@/components/Common/Breadcrumb/Breadcrumb";
+import BlogContentList from "@/components/Blog/BlogContentList";
+import BlogHeader from "@/components/Blog/BlogHeader";
 import Container from "@/components/Common/Container";
 import Col from "@/components/Common/Grid/Col";
 import Flex from "@/components/Common/Grid/Flex";
 import Layout from "@/components/Layouts/Layout";
 import tokens from "@/config/tokens";
-import { toJalali } from "@/helpers/date";
 import useIsMobile from "@/hooks/useIsMobile";
 import {
-  Body1,
+  Accordion,
+  AccordionHeader,
+  AccordionItem,
+  AccordionPanel,
   Body2,
-  Caption1,
   Divider,
-  Link,
-  Title3,
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -30,26 +30,10 @@ type Props = {
 };
 export default function Blog(props: Props) {
   const { footerInfo, navigation, blog } = props;
-  const {
-    title,
-    slug,
-    image,
-    category_id,
-    readDuration,
-    createdAt,
-    text,
-    anchors,
-  } = blog.attributes;
+  const { title, text, anchors } = blog.attributes;
 
   const isMobile = useIsMobile();
   const styles = useStyles();
-  const [selectedAnchor, setSelectedAnchor] = useState("");
-
-  const breadcrumbItems = [
-    { label: "صفحه نخست", link: "/" },
-    { label: "بلاگ", link: "/blog" },
-    { label: title, link: slug },
-  ];
 
   return (
     <Layout footerInfo={footerInfo} navigation={navigation}>
@@ -59,67 +43,39 @@ export default function Blog(props: Props) {
       </Head>
       <Container>
         <Container>
-          <Flex style={{ padding: `${tokens.spacingVerticalXXXL} 0` }}>
-            <Col size={9}>
-              <Wrapper>
-                <Flex gap={24} column>
-                  <Breadcrumb justify="start" items={breadcrumbItems} />
-                  <Flex gap={24}>
-                    {image?.data?.attributes?.formats?.thumbnail && (
-                      <img
-                        src={`${process.env.NEXT_PUBLIC_ADMIN_URL}${image.data.attributes.formats.thumbnail.url}`}
-                        alt={title}
-                        width={150}
-                        height={150}
-                        className={styles.img}
-                      />
-                    )}
-                    <Flex column justify="evenly" style={{ minWidth: "auto" }}>
-                      <Body1>{category_id.data.attributes.category}</Body1>
-                      <Title3>{title}</Title3>
-                      <Flex gap={44}>
-                        <Caption1
-                          className={styles.readDuration}
-                        >{`زمان مطالعه ${readDuration} دقیقه`}</Caption1>
-                        <Caption1 className={styles.readDuration}>
-                          {toJalali(createdAt)}
-                        </Caption1>
-                      </Flex>
-                    </Flex>
-                  </Flex>
-                </Flex>
-                <Divider className={styles.customLineColor} />
-                <BlogContent content={text} />
-              </Wrapper>
+          <Flex
+            style={{ padding: `${tokens.spacingVerticalXXXL} 0` }}
+            column={isMobile}
+          >
+            <Col size={isMobile ? 12 : 9}>
+              {isMobile ? (
+                <>
+                  <Wrapper style={{ marginBottom: tokens.spacingVerticalXXXL }}>
+                    <BlogHeader blog={blog.attributes} />
+                  </Wrapper>
+
+                  <Wrapper style={{ marginBottom: tokens.spacingVerticalXXXL }}>
+                    <BlogContentList anchors={anchors} />
+                  </Wrapper>
+                  <Wrapper>
+                    <BlogContent content={text} />
+                  </Wrapper>
+                </>
+              ) : (
+                <Wrapper>
+                  <BlogHeader blog={blog.attributes} />
+                  <Divider className={styles.customLineColor} />
+                  <BlogContent content={text} />
+                </Wrapper>
+              )}
             </Col>
-            <Col size={3}>
-              <Wrapper>
-                <Body2 color={tokens.colorNeutralForeground3}>
-                  فهرست محتوا
-                </Body2>
-                {anchors && (
-                  <AnchorsList>
-                    {anchors.map((anchor) => (
-                      <AnchorListItem
-                        className={
-                          selectedAnchor === anchor.link ? "active" : ""
-                        }
-                      >
-                        <Body1 style={{ display: "block" }}>
-                          <Link
-                            href={`#${anchor.link}`}
-                            appearance="subtle"
-                            onClick={() => setSelectedAnchor(anchor.link)}
-                          >
-                            {anchor.name}
-                          </Link>
-                        </Body1>
-                      </AnchorListItem>
-                    ))}
-                  </AnchorsList>
-                )}
-              </Wrapper>
-            </Col>
+            {!isMobile && (
+              <Col size={3}>
+                <Wrapper>
+                  <BlogContentList anchors={anchors} />
+                </Wrapper>
+              </Col>
+            )}
           </Flex>
         </Container>
         <Space isMobile={isMobile} />
@@ -152,46 +108,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 }
 
-const Pre = styled.pre`
-  white-space: break-spaces;
-  font-family: "YekanBakh";
-  line-height: 2rem;
-  padding: ${tokens.spacingVerticalXXL} 0;
-`;
-
-const AnchorsList = styled.ul`
-  list-style-type: none;
-  padding: ${tokens.spacingVerticalSNudge} 0;
-  margin: 0;
-`;
-
-const AnchorListItem = styled.ul`
-  list-style-type: none;
-  padding: ${tokens.spacingVerticalSNudge} 0;
-  position: relative;
-  & a {
-    display: block;
-    :hover {
-      text-decoration-line: none;
-    }
-  }
-  &.active {
-    & a {
-      color: ${tokens.colorPaletteRedBackground1};
-    }
-    :before {
-      content: "";
-      display: block;
-      height: 32px;
-      width: 2px;
-      background: ${tokens.colorPaletteRedBackground1};
-      position: absolute;
-      left: calc(100% + ${tokens.spacingVerticalXXL} - 2px);
-      top: 0;
-    }
-  }
-`;
-
 const Space = styled.div<{ isMobile: boolean }>`
   height: ${(props) => (props.isMobile ? "20px" : "200px")};
   background-image: ${(props) =>
@@ -201,7 +117,7 @@ const Space = styled.div<{ isMobile: boolean }>`
 `;
 
 const Wrapper = styled.div`
-  border-radius: ${tokens.borderRadiusMedium};
+  border-radius: ${tokens.borderRadiusXLarge};
   background: ${tokens.colorNeutralBackground2};
   padding: ${tokens.spacingVerticalXXL};
 }
