@@ -4,12 +4,14 @@ import useIsMobile from "@/hooks/useIsMobile";
 import {
   Body1,
   Caption1,
+  Image,
   Title3,
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
 import Breadcrumb from "../Common/Breadcrumb/Breadcrumb";
 import Flex from "../Common/Grid/Flex";
+import styled from "styled-components";
 
 interface Props {
   blog: Blog["attributes"];
@@ -42,13 +44,13 @@ const BlogHeader = (props: Props) => {
       <Breadcrumb justify="start" items={breadcrumbItems} />
       <Flex gap={24}>
         {!isMobile && image?.data?.attributes?.formats?.thumbnail && (
-          <img
-            src={`${process.env.NEXT_PUBLIC_ADMIN_URL}${image.data.attributes.formats.thumbnail.url}`}
-            alt={title}
-            width={150}
-            height={150}
-            className={styles.img}
-          />
+          <ThumbnailWrapper>
+            <Image
+              src={`${process.env.NEXT_PUBLIC_ADMIN_URL}${image.data.attributes.formats.small.url}`}
+              alt={title}
+              height={150}
+            />
+          </ThumbnailWrapper>
         )}
         <Flex
           column
@@ -84,11 +86,19 @@ const useStyles = makeStyles({
     },
     marginTop: tokens.spacingVerticalXXL,
   },
-  img: {
-    ...shorthands.borderRadius(tokens.spacingVerticalS),
-  },
   readDuration: {
     color: tokens.colorNeutralForeground4,
     fontFamily: "YekanBakhFaNum",
   },
 });
+
+const ThumbnailWrapper = styled.div`
+  width: 150px;
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+  border-radius: ${tokens.borderRadiusXLarge};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
