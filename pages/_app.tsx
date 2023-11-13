@@ -40,6 +40,7 @@ export default function App({
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Protopie in Persian" />
       </Head>
       <RendererProvider renderer={renderer || createDOMRenderer()}>
         <SSRProvider>
