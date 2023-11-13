@@ -119,8 +119,8 @@ const Wrapper = styled.div`
 `;
 
 const MobileMenuWrapper = styled.div<{ isMenuOpen: boolean }>`
-  position: absolute;
-  height: calc(100% - 56px);
+  position: fixed;
+  height: calc(100vh - 56px);
   width: 100%;
   left: 0;
   bottom: 0;
@@ -145,7 +145,7 @@ const MobileNavbarList = styled.ul`
   align-items: center;
   list-style: none;
   flex-direction: column;
-  height: calc(100% - 56px);
+  height: calc(100vh - 56px);
   justify-content: space-between;
   gap: ${tokens.spacingHorizontalXXL};
   padding: ${tokens.spacingHorizontalXXL};
