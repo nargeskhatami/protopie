@@ -88,7 +88,9 @@ export default function Navbar(props: Props) {
           </>
         ) : (
           <NavbarList>
-            <Auth />
+            <li>
+              <Auth />
+            </li>
             {navigation.map((item) => {
               return (
                 <li key={item.id}>
@@ -101,7 +103,7 @@ export default function Navbar(props: Props) {
         )}
         <Flex align="center" gap={12} style={{ minWidth: "unset" }}>
           <Body2 style={{ color: tokens.colorBrandBackground }}>Beta</Body2>
-          <Link href="/">
+          <Link href="/" aria-label="Protopie Logo">
             <svg width={234} height={30}>
               <use href={`/sprite.svg#logo`} />
             </svg>

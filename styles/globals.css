@@ -1,10 +1,12 @@
 @font-face {
   font-family: "YekanBakh";
   src: url("/fonts/YekanBakh-VF.ttf");
+  font-display: swap;
 }
 @font-face {
   font-family: "YekanBakhFaNum";
   src: url("/fonts/YekanBakh-FaNum.woff");
+  font-display: swap;
 }
 
 :root {

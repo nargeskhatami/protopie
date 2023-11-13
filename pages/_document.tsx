@@ -76,7 +76,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html lang="fa">
         <Head>
           <link
             rel="preload"

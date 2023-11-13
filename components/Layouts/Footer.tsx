@@ -107,6 +107,7 @@ export default function Footer(props: Props) {
                         target="_blank"
                         className={styles.link}
                         key={`social-${index}`}
+                        aria-label={`Protopie ${social.title}`}
                       >
                         <svg width={24} height={24}>
                           <use
