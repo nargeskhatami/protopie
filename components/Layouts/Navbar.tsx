@@ -48,6 +48,18 @@ export default function Navbar(props: Props) {
 
             <MobileMenuWrapper isMenuOpen={isMenuOpen}>
               <MobileNavbarList>
+                <Button
+                  style={{
+                    minWidth: "fit-content",
+                    marginRight: 0,
+                    marginLeft: "auto",
+                  }}
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  appearance="transparent"
+                  size="small"
+                >
+                  <XMarkIcon width={24} height={24} />
+                </Button>
                 <MobileMenu column gap={tokens.spacingVerticalXL}>
                   <Input
                     style={{
@@ -120,15 +132,16 @@ const Wrapper = styled.div`
 
 const MobileMenuWrapper = styled.div<{ isMenuOpen: boolean }>`
   position: fixed;
-  height: calc(100vh - 56px);
+  height: 100%;
   width: 100%;
   left: 0;
   bottom: 0;
-  background: ${tokens.colorNeutralBackground3};
   z-index: 1000;
   transition: all 0.2s;
   visibility: ${({ isMenuOpen }) => (isMenuOpen ? "visible" : "hidden")};
   opacity: ${({ isMenuOpen }) => (isMenuOpen ? "1" : "0")};
+  z-index: 1000;
+  background: ${tokens.colorNeutralBackground3};
 `;
 
 const MobileMenu = styled(Flex)``;
@@ -145,7 +158,7 @@ const MobileNavbarList = styled.ul`
   align-items: center;
   list-style: none;
   flex-direction: column;
-  height: calc(100vh - 56px);
+  height: 100% 
   justify-content: space-between;
   gap: ${tokens.spacingHorizontalXXL};
   padding: ${tokens.spacingHorizontalXXL};
