@@ -6,7 +6,7 @@ interface Menu {
   path: string;
   type: string;
   slug: string;
-  items: Menu[];
+  // items: Menu[];
 }
 
 // ------------- Home -------------
@@ -91,7 +91,6 @@ interface Data {
 
 interface ImageAttributes {
   name: string;
-  // caption: any;
   width: number;
   height: number;
   formats: Formats;
@@ -117,7 +116,6 @@ interface Small {
   hash: string;
   mime: string;
   name: string;
-  // path: any;
   size: number;
   width: number;
   height: number;
@@ -129,7 +127,6 @@ interface Medium {
   hash: string;
   mime: string;
   name: string;
-  // path: any;
   size: number;
   width: number;
   height: number;
