@@ -6,7 +6,7 @@ interface Menu {
   path: string;
   type: string;
   slug: string;
-  // items: Menu[];
+  items: Menu[];
 }
 
 // ------------- Home -------------
