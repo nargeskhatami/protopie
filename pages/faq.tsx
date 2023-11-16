@@ -115,6 +115,7 @@ export default function FAQ(props: Props) {
               >
                 {selectedFaq.attributes.faq_lists.data.map((item, index) => (
                   <AccordionItem
+                    key={`faq-key-${index}`}
                     value={`faq-${index}`}
                     className={styles.accordionItem}
                   >

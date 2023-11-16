@@ -37,7 +37,7 @@ export default function GoogleLoginRedirect(props: Props) {
           console.log(err);
           setText("خطایی رخ داده است !");
         });
-  }, [router.query]);
+  }, [router]);
 
   return (
     <Layout footerInfo={footerInfo} navigation={navigation}>

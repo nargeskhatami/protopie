@@ -19,15 +19,16 @@ interface Props {
   anchors: Blog["attributes"]["anchors"];
 }
 
-const renderAnchors = (props: Props) => {
+const RenderAnchors = (props: Props) => {
   const { anchors } = props;
   const [selectedAnchor, setSelectedAnchor] = useState("");
 
   return (
     anchors && (
       <AnchorsList>
-        {anchors.map((anchor) => (
+        {anchors.map((anchor, index) => (
           <AnchorListItem
+            key={`anchor-key-${index}`}
             className={selectedAnchor === anchor.link ? "active" : ""}
           >
             <Body1 style={{ display: "block" }}>
@@ -66,7 +67,7 @@ const BlogContentList = (props: Props) => {
             </AccordionHeader>
             <AccordionPanel>
               <Accordion collapsible multiple className={styles.accordion}>
-                {renderAnchors({ anchors })}
+                {RenderAnchors({ anchors })}
               </Accordion>
             </AccordionPanel>
           </AccordionItem>
@@ -74,7 +75,7 @@ const BlogContentList = (props: Props) => {
       ) : (
         <>
           <Body2 color={tokens.colorNeutralForeground3}>فهرست محتوا</Body2>
-          {renderAnchors({ anchors })}
+          {RenderAnchors({ anchors })}
         </>
       )}
     </>

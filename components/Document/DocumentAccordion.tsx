@@ -20,7 +20,7 @@ type Props = {
   setSlug: (slug: string) => void;
 };
 
-const renderMenu = (props: Props) => {
+const RenderMenu = (props: Props) => {
   const { menu, refetch, setSlug } = props;
   const styles = useStyles();
   const isMobile = useIsMobile();
@@ -87,14 +87,14 @@ export default function DocumentAccordion(props: Props) {
         </AccordionHeader>
         <AccordionPanel>
           <Accordion collapsible multiple className={styles.accordion}>
-            {renderMenu({ menu, refetch, setSlug })}
+            {RenderMenu({ menu, refetch, setSlug })}
           </Accordion>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
   ) : (
     <Accordion collapsible multiple className={styles.accordion}>
-      {renderMenu({ menu, refetch, setSlug })}
+      {RenderMenu({ menu, refetch, setSlug })}
     </Accordion>
   );
 }
