@@ -207,3 +207,46 @@ interface LoginForm {
   password?: string;
   username?: string;
 }
+
+// ------------- FAQ -------------
+
+interface FaqItem {
+  id: number;
+  attributes: FaqItemAttributes;
+}
+
+interface FaqItemAttributes {
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  faqs: FaqList;
+}
+
+interface FaqList {
+  data: {
+    id: number;
+    attributes: FaqListAttributes;
+  }[];
+}
+
+interface FaqListAttributes {
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  faq_lists: {
+    data: {
+      id: number;
+      attributes: FaqAttributes;
+    }[];
+  };
+}
+
+interface FaqAttributes {
+  question: string;
+  answer: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
