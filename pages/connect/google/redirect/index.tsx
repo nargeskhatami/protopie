@@ -12,11 +12,10 @@ import styled from "styled-components";
 type Props = {
   footerInfo: FooterInfo;
   navigation: Menu[];
-  menu: DocumentationMenu[];
 };
 
 export default function GoogleLoginRedirect(props: Props) {
-  const { footerInfo, navigation, menu } = props;
+  const { footerInfo, navigation } = props;
   const [text, setText] = useState("لطفا صبر کنید ...");
   const router = useRouter();
   const isMobile = useIsMobile();

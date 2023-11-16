@@ -1,13 +1,11 @@
 import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 import InputLarge from "../Common/Input/InputLarge";
-import { useEffect } from "react";
 
 export default function ForgotPassword() {
   const {
     control,
     formState: { errors },
-    reset,
   } = useFormContext<LoginForm>();
 
   return (

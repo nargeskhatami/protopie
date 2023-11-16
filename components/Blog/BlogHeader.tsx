@@ -19,16 +19,7 @@ interface Props {
 
 const BlogHeader = (props: Props) => {
   const { blog } = props;
-  const {
-    title,
-    slug,
-    image,
-    category_id,
-    readDuration,
-    createdAt,
-    text,
-    anchors,
-  } = blog;
+  const { title, slug, image, category_id, readDuration, createdAt } = blog;
 
   const breadcrumbItems = [
     { label: "صفحه نخست", link: "/" },

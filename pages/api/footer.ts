@@ -13,9 +13,9 @@ export default async function handler(
           `${process.env.APP_API_BASEURL}/footerinfo`
         );
 
-        let { links, SocialMedias } = footerInfo.data.data.attributes.data;
+        const { links, SocialMedias } = footerInfo.data.data.attributes.data;
 
-        links = links.map(
+        const _links = links.map(
           (link: {
             title: string;
             subMenus: { title: string; path: string }[];
@@ -28,7 +28,7 @@ export default async function handler(
           })
         );
 
-        res.status(200).json({ links, SocialMedias });
+        res.status(200).json({ links: _links, SocialMedias });
       } catch (error) {
         res.status(500).json(error);
       }

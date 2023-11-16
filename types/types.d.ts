@@ -91,8 +91,7 @@ interface Data {
 
 interface ImageAttributes {
   name: string;
-  alternativeText: any;
-  caption: any;
+  // caption: any;
   width: number;
   height: number;
   formats: Formats;
@@ -101,7 +100,6 @@ interface ImageAttributes {
   mime: string;
   size: number;
   url: string;
-  previewUrl: any;
   provider: string;
   createdAt: string;
   updatedAt: string;
@@ -119,7 +117,7 @@ interface Small {
   hash: string;
   mime: string;
   name: string;
-  path: any;
+  // path: any;
   size: number;
   width: number;
   height: number;
@@ -131,7 +129,7 @@ interface Medium {
   hash: string;
   mime: string;
   name: string;
-  path: any;
+  // path: any;
   size: number;
   width: number;
   height: number;
@@ -143,7 +141,7 @@ interface Thumbnail {
   hash: string;
   mime: string;
   name: string;
-  path: any;
+  // path: any;
   size: number;
   width: number;
   height: number;

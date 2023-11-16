@@ -1,4 +1,5 @@
 import { loginShema } from "@/helpers/validations/auth";
+import useIsMobile from "@/hooks/useIsMobile";
 import {
   Dialog,
   DialogActions,
@@ -6,10 +7,10 @@ import {
   DialogContent,
   DialogSurface,
   DialogTitle,
-  shorthands,
   DialogTrigger,
   makeStyles,
 } from "@fluentui/react-components";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useState } from "react";
@@ -20,8 +21,6 @@ import ButtonBlock from "../Common/Button/ButtonBlock";
 import ForgotPassword from "./ForgotPassword";
 import Login from "./Login";
 import Register from "./Register";
-import useIsMobile from "@/hooks/useIsMobile";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function AuthDialog() {
   const [title, setTitle] = useState("ورود");
@@ -39,7 +38,7 @@ export default function AuthDialog() {
       username: "",
     },
   });
-  const { watch, setValue } = formMethods;
+  const { watch } = formMethods;
 
   const authComponent = watch("component");
 

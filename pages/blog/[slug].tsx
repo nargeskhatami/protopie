@@ -7,17 +7,7 @@ import Flex from "@/components/Common/Grid/Flex";
 import Layout from "@/components/Layouts/Layout";
 import tokens from "@/config/tokens";
 import useIsMobile from "@/hooks/useIsMobile";
-import {
-  Accordion,
-  AccordionHeader,
-  AccordionItem,
-  AccordionPanel,
-  Body2,
-  Divider,
-  makeStyles,
-  shorthands,
-} from "@fluentui/react-components";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Divider, makeStyles, shorthands } from "@fluentui/react-components";
 import axios from "axios";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";

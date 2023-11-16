@@ -8,7 +8,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Body1,
-  Button,
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
@@ -17,8 +16,8 @@ import styled from "styled-components";
 
 type Props = {
   menu: DocumentationMenu[];
-  refetch: Function;
-  setSlug: Function;
+  refetch: () => void;
+  setSlug: (slug: string) => void;
 };
 
 const renderMenu = (props: Props) => {
