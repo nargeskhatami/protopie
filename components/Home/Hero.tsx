@@ -1,10 +1,17 @@
 import Button from "@/components/Common/Button/Button";
 import ButtonBlock from "@/components/Common/Button/ButtonBlock";
 import useIsMobile from "@/hooks/useIsMobile";
-import { Body2, Display, Divider, Title1, makeStyles, tokens } from "@fluentui/react-components";
+import {
+  Body2,
+  Display,
+  Divider,
+  Title1,
+  makeStyles,
+  tokens,
+} from "@fluentui/react-components";
 import Image from "next/image";
 import styled from "styled-components";
-import heroPic from "../../public/images/learn-protopite.png";
+import heroPic from "../../public/images/protopie-mockup-app.png";
 import Flex from "../Common/Grid/Flex";
 
 type Props = {
@@ -19,8 +26,18 @@ export default function Hero(props: Props) {
   const isMobile = useIsMobile();
 
   return (
-    <HeroWrapper column align="center" justify="center" gap={tokens.spacingVerticalXXXL}>
-      <Flex column align="center" justify="center" gap={tokens.spacingHorizontalXXXL}>
+    <HeroWrapper
+      column
+      align="center"
+      justify="center"
+      gap={tokens.spacingVerticalXXXL}
+    >
+      <Flex
+        column
+        align="center"
+        justify="center"
+        gap={tokens.spacingHorizontalXXXL}
+      >
         <Flex
           direction="ltr"
           gap={tokens.spacingHorizontalS}
@@ -30,25 +47,38 @@ export default function Hero(props: Props) {
         >
           {isMobile ? (
             <>
-              <Title1 className={styles.heroFirstTitlePart}>{mainTitle.firstPart}</Title1>
+              <Title1 className={styles.heroFirstTitlePart}>
+                {mainTitle.firstPart}
+              </Title1>
               <Title1>{mainTitle.secondPart}</Title1>
               <Title1>{mainTitle.thirdPart}</Title1>
             </>
           ) : (
             <>
-              <Display className={styles.heroFirstTitlePart}>{mainTitle.firstPart}</Display>
+              <Display className={styles.heroFirstTitlePart}>
+                {mainTitle.firstPart}
+              </Display>
               <Display>{mainTitle.secondPart}</Display>
               <Display>{mainTitle.thirdPart}</Display>
             </>
           )}
         </Flex>
-        <Flex gap={tokens.spacingHorizontalS} column={isMobile} align="center" justify="center">
+        <Flex
+          gap={tokens.spacingHorizontalS}
+          column={isMobile}
+          align="center"
+          justify="center"
+        >
           <Body2 className={styles.heroSubtitle}>{subTitle.firstPart}</Body2>
           {!isMobile && <Divider vertical style={{ flex: "unset" }} />}
           <Body2 className={styles.heroSubtitle}>{subTitle.secondPart}</Body2>
         </Flex>
         <Body2>{description}</Body2>
-        <Flex gap={tokens.spacingHorizontalL} justify="center" column={isMobile}>
+        <Flex
+          gap={tokens.spacingHorizontalL}
+          justify="center"
+          column={isMobile}
+        >
           {isMobile ? (
             <>
               <ButtonBlock
@@ -105,7 +135,7 @@ const HeroWrapper = styled(Flex)`
   margin: ${tokens.spacingVerticalXXXL} 0;
   padding: 0 ${tokens.spacingHorizontalXL};
   img {
-    width: auto !important;
-    height: 85vh !important;
+    max-width: 100%;
+    object-fit: contain;
   }
 `;
