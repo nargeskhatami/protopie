@@ -33,7 +33,7 @@ export default function Blog(props: Props) {
         <Heading title="بلاگ" />
         <Breadcrumb items={breadcrumbItems} />
         <Space isMobile={isMobile} />
-        <Flex column={isMobile}>
+        <Flex column={isMobile} style={{ flexWrap: "wrap" }}>
           {blogs.map((blog, index) => (
             <BlogCard
               key={`blog-${index}`}

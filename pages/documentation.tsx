@@ -33,7 +33,10 @@ export default function Documentation(props: Props) {
       </Head>
       <Container>
         <Flex
-          style={{ padding: `${tokens.spacingVerticalXXXL} 0` }}
+          style={{
+            padding: `${tokens.spacingVerticalXXXL} 0`,
+            minHeight: "100vh",
+          }}
           column={isMobile}
         >
           <Col size={isMobile ? 12 : 3}>

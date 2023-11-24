@@ -20,7 +20,11 @@ export default function Heading(props: Props) {
   const isMobile = useIsMobile();
 
   return (
-    <Flex align="center" column className={styles.Wrapper}>
+    <Flex
+      align="center"
+      column
+      className={isMobile ? styles.WrapperMobile : styles.Wrapper}
+    >
       {isMobile ? <Subtitle1>{title}</Subtitle1> : <Title2>{title}</Title2>}
       {subtitle && <Body2 className={styles.subTitle}>{subtitle}</Body2>}
     </Flex>
@@ -31,6 +35,10 @@ const useStyles = makeStyles({
   Wrapper: {
     marginTop: tokens.spacingVerticalXXXL,
     marginBottom: tokens.spacingVerticalXXXL,
+  },
+  WrapperMobile: {
+    marginTop: tokens.spacingVerticalXXXL,
+    marginBottom: tokens.spacingVerticalM,
   },
   subTitle: {
     marginTop: tokens.spacingVerticalMNudge,

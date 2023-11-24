@@ -1,13 +1,7 @@
 import Auth from "@/components/Auth/Container";
 import Container from "@/components/Common/Container";
 import useIsMobile from "@/hooks/useIsMobile";
-import {
-  Body1,
-  Body2,
-  Button,
-  Divider,
-  Input,
-} from "@fluentui/react-components";
+import { Body1, Body2, Button, Input } from "@fluentui/react-components";
 import { tokens } from "@fluentui/react-theme";
 import {
   Bars3Icon,
@@ -106,7 +100,7 @@ export default function Navbar(props: Props) {
             {navigation.map((item) => {
               return (
                 <li key={item.id}>
-                  <Link href={item.path}>{item.title}</Link>
+                  <MenuItemLink href={item.path}>{item.title}</MenuItemLink>
                 </li>
               );
             })}
@@ -170,4 +164,16 @@ const StyledContainer = styled(Container)<{ isMobile?: boolean }>`
   justify-content: space-between;
   padding: ${({ isMobile }) =>
     isMobile ? `0 ${tokens.spacingHorizontalXL}` : `0`};
+`;
+
+const MenuItemLink = styled(Link)`
+  &:hover {
+    color: ${tokens.colorBrandForeground1};
+  }
+`;
+
+const Divider = styled.div`
+  background: ${tokens.colorNeutralStroke3};
+  height: 1px;
+  width: 100%;
 `;
