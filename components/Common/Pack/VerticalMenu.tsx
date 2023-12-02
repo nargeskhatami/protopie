@@ -2,6 +2,7 @@ import { Body1, makeStyles, tokens } from "@fluentui/react-components";
 import Link from "next/link";
 import styled from "styled-components";
 import Flex from "../Grid/Flex";
+import useIsMobile from "@/hooks/useIsMobile";
 
 type Props = {
   title?: string;
@@ -12,6 +13,7 @@ type Props = {
 export default function VerticalMenu(props: Props) {
   const { title, menuItems, menuIndex } = props;
   const styles = useStyles();
+  const isMobile = useIsMobile();
 
   return (
     <Flex column className={styles.Wrapper} gap={16}>
@@ -20,7 +22,7 @@ export default function VerticalMenu(props: Props) {
         {menuItems.map((item, index) => (
           <Body1
             key={`menu-${menuIndex}-item-${index}`}
-            className={styles.menuItem}
+            className={isMobile ? styles.mobileMenuItem : styles.menuItem}
           >
             <MenuLink href={item.slug}>{item.title}</MenuLink>
           </Body1>
@@ -36,6 +38,9 @@ const useStyles = makeStyles({
   },
   menuItem: {
     color: tokens.colorNeutralForeground3,
+  },
+  mobileMenuItem: {
+    lineHeight: "28px",
   },
 });
 
