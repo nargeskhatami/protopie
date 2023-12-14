@@ -33,7 +33,7 @@ export default function BlogCard(props: Props) {
           <CardPreview className={styles.CardPreview}>
             {image?.data?.attributes?.url && (
               <Image
-                src={`https://admin.protopie.ir${image.data.attributes.url}`}
+                src={`${process.env.NEXT_PUBLIC_ADMIN_URL}${image.data.attributes.url}`}
                 alt={title}
                 className={styles.img}
                 fill

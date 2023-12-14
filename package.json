@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ducanh2912/react-hls-player": "^3.3.5",
     "@fluentui/react-components": "^9.20.3",
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.3.1",
